@@ -17,8 +17,14 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.LeftShift)) walk = (walk + run);
-        //if (Input.GetKeyUp(KeyCode.LeftShift)) walk = (walk - run);
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            walk = (walk + run); //yвеличиваем скорость при нажатии Shift
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            walk = (walk - run); //возвращаем скорость при отпускании Shift
+        }
         float horizontal = Input.GetAxis("Horizontal"); //с клавиатуры получаем направ по горизонт от 1 до -1
         float vertical = Input.GetAxis("Vertical"); //с клавиатуры получаем направ по вертикали от 1 до -1
         movement = new Vector3(horizontal, 0f, vertical); //определяем вектор направления будущего движения
