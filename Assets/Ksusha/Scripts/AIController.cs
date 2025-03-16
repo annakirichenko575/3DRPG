@@ -13,6 +13,8 @@ public class AIController : MonoBehaviour
 
     public float viewRadius = 15;
     public float viewAngle = 90;
+    //атака расстоянике
+    //public float attackRadius = 10f;
     public LayerMask playerMask;
     public LayerMask obstacleMask;
     public float meshResolution = 1f;
@@ -32,6 +34,8 @@ public class AIController : MonoBehaviour
     bool m_IsPatrol;
     bool m_CaughtPlayer;
 
+    private Animator animator;
+
     void Start()
     {
         m_PlayerPosition = Vector3.zero;
@@ -47,6 +51,8 @@ public class AIController : MonoBehaviour
         navMeshAgent.isStopped = false;
         navMeshAgent.speed = speedWalk;
         navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -62,6 +68,22 @@ public class AIController : MonoBehaviour
         {
             Patroling();
         }
+
+        //временно - проверяем, находится ли игрок в радиусе атаки
+        /*
+        if (m_PlayerInRange && Vector3.Distance(transform.position, m_PlayerPosition) <= attackRadius)
+        {
+            Attack();
+        }
+        */
+        UpdateAnimations();
+    }
+
+    private void UpdateAnimations()
+    {
+        animator.SetBool("isPatroling", m_IsPatrol && navMeshAgent.velocity.magnitude > 0.1f);
+        animator.SetBool("isChasing", !m_IsPatrol && navMeshAgent.velocity.magnitude > 0.1f);
+        animator.SetBool("isAttacking", m_PlayerInRange && Vector3.Distance(transform.position, m_PlayerPosition) <= 10f);
     }
 
     private void Chasing()
@@ -131,6 +153,18 @@ public class AIController : MonoBehaviour
             }
         }
     }
+
+    /*
+    //тоже временно для атаки
+    private void Attack()
+    {
+        //нанесение урона мб
+        Debug.Log("Attacking the player!");
+
+        //если игрок пойман, вызываем метод CaughtPlayer
+        CaughtPlayer();
+    }
+    */
 
     void Move(float speed)
     {
