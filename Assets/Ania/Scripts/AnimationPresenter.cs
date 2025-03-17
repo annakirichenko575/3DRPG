@@ -14,6 +14,8 @@ public class AnimationPresenter : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    private string currentState = "Idle"; // Текущее состояние анимации
+
     private void Update()
     {
         if (movement.IsIdle())

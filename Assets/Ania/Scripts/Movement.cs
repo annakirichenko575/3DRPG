@@ -30,10 +30,10 @@ public class Movement : MonoBehaviour
         rigidbody.MovePosition(position);
 
         // ѕоворот объекта Dwarf в зависимости от направлени€ движени€
-        if (inputDirection != Vector3.zero)
+        if (inputDirection != Vector3.zero) //если есть направление движени€
         {
-            Quaternion targetRotation = Quaternion.LookRotation(inputDirection);
-            dwarf.rotation = Quaternion.Slerp(dwarf.rotation, targetRotation, Time.fixedDeltaTime * 10f);
+            Quaternion targetRotation = Quaternion.LookRotation(inputDirection); //целевой поворот
+            dwarf.rotation = Quaternion.Slerp(dwarf.rotation, targetRotation, Time.fixedDeltaTime * 10f); //плавный поворот
         }
     }
 
