@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walk: 3
-  run: 2
+  run: 5
 --- !u!1 &7191350436608062752
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +321,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7516d2e7ac568ce41ac27fb76488435a, type: 3}
       propertyPath: m_Name
-      value: Dwarf Idle
+      value: Dwarf
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
