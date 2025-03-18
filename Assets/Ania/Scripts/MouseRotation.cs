@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseRotation : MonoBehaviour
 {
-    public float mouseSensitivi = 100f;
-    public Transform playerBody; //поворот тела перса с камерой
-    
-    private float xRotation = 0f;
+    [SerializeField] private float mouseSensitivi = 100f;
+    [SerializeField] private Transform playerBody; //поворот тела перса с камерой
+    [SerializeField] private float xRotation = 0f;
 
     private void Start()
     {

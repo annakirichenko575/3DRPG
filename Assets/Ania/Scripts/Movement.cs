@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
     [SerializeField] private float walk = 3f;
     [SerializeField] private float run = 5f;
-
     [SerializeField] private Transform dwarf;
 
     private Vector3 inputDirection = Vector3.zero;
@@ -30,7 +27,7 @@ public class Movement : MonoBehaviour
         rigidbody.MovePosition(position);
 
         // Поворот объекта Dwarf в зависимости от направления движения
-        if (inputDirection != Vector3.zero) //если есть направление движения
+        if (inputDirection.sqrMagnitude != 0f) //если есть направление движения
         {
             Quaternion targetRotation = Quaternion.LookRotation(inputDirection); //целевой поворот
             dwarf.rotation = Quaternion.Slerp(dwarf.rotation, targetRotation, Time.fixedDeltaTime * 10f); //плавный поворот
@@ -39,10 +36,6 @@ public class Movement : MonoBehaviour
 
     public bool IsIdle()
     {
-        if (inputDirection.sqrMagnitude >= 0.1f)
-        {
-            Debug.Log(inputDirection.sqrMagnitude);
-        }
         return inputDirection.sqrMagnitude < 0.1f;
     }
 
