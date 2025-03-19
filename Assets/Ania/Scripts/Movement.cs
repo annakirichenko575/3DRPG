@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour
     private Vector3 inputDirection = Vector3.zero;
     private Rigidbody rigidbody;
     private float speed;
+    private bool isAttacking = false; // Флаг для атаки
 
     private void Awake()
     {
@@ -42,6 +43,22 @@ public class Movement : MonoBehaviour
     public bool IsRun()
     {
         return Input.GetKey(KeyCode.LeftShift);
+    }
+
+    public bool IsAttacking() // Метод для проверки атаки
+    {
+        return isAttacking;
+    }
+
+    private void StartAttack()
+    {
+        isAttacking = true;
+        inputDirection = Vector3.zero; // Останавливаем движение
+    }
+
+    private void CompleteAttack()
+    {
+        isAttacking = false; // Завершаем атаку
     }
 
     private void PlayerInput()
