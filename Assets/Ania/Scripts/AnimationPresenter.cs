@@ -12,7 +12,7 @@ public class AnimationPresenter : MonoBehaviour
     private const string ToRunName = "ToRun";
     private const string ToPhysicAttackName = "ToPhysicAttack"; // Новый триггер для атаки
 
-    [SerializeField] private Movement movement;
+    [SerializeField] private PlayerInput playerInput;
 
     private Animator animator;
     private bool IsIdle, IsWalk, IsRun, IsPhysicAttack;
@@ -28,13 +28,13 @@ public class AnimationPresenter : MonoBehaviour
         if (IsPhysicAttack) // Если атака активна, игнорируем другие анимации
             return;
 
-        if (movement.IsIdle())
+        if (playerInput.IsIdle())
         {
             PlaySadIdle(); // Включаем анимацию Sad Idle
         }
         else
         {
-            if (movement.IsRun())
+            if (playerInput.IsRun())
             {
                 PlayRun(); // Включаем анимацию Run
             }
@@ -52,7 +52,7 @@ public class AnimationPresenter : MonoBehaviour
     }
 
     // Метод для переключения на анимацию "Sad Idle"
-    public void PlaySadIdle()
+    private void PlaySadIdle()
     {     
         if (IsPlaying(SadIdleState)) // Проверяем, не проигрывается ли уже эта анимация
             return;
@@ -63,7 +63,7 @@ public class AnimationPresenter : MonoBehaviour
     }
 
     // Метод для переключения на анимацию "Walk"
-    public void PlayWalk()
+    private void PlayWalk()
     {
         if (IsPlaying(WalkState)) // Проверяем, не проигрывается ли уже эта анимация
             return;
@@ -74,7 +74,7 @@ public class AnimationPresenter : MonoBehaviour
     }
 
     // Метод для переключения на анимацию "Run"
-    public void PlayRun()
+    private void PlayRun()
     {
         if (IsPlaying(RunState)) // Проверяем, не проигрывается ли уже эта анимация
             return;
@@ -85,7 +85,7 @@ public class AnimationPresenter : MonoBehaviour
     }
 
     // Метод для переключения на анимацию "Physic Attack"
-    public void PlayPhysicAttack()
+    private void PlayPhysicAttack()
     {
         if (IsPlaying(PhysicAttackState)) // Проверяем, не проигрывается ли уже эта анимация
             return;
