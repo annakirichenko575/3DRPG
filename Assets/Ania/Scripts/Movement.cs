@@ -26,10 +26,7 @@ public class Movement : MonoBehaviour
         {
             speed = run; 
         }
-        //Debug.Log(playerInput.MoveInput);
-        inputDirection = transform.forward * playerInput.MoveInput.z + transform.right * inputDirection.x;
-        //Debug.Log(inputDirection);
-        Debug.Log(transform.forward);
+        inputDirection = transform.forward * playerInput.MoveInput.z + transform.right * playerInput.MoveInput.x;
     }
 
     private void FixedUpdate()
