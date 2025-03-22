@@ -10,6 +10,7 @@ namespace Player
         private const string WalkState = "Walking";
         private const string RunState = "Run";
         private const string PhysicAttackState = "PhysicAttack";
+        private const string MagicAttackState = "MagicAttack";
         private const string HitState = "Hit";
         private const string DeathState = "Death";
 
@@ -17,10 +18,14 @@ namespace Player
         private const string ToWalkName = "ToWalk";
         private const string ToRunName = "ToRun";
         private const string ToPhysicAttackName = "ToPhysicAttack";
+        private const string ToMagicAttackName = "ToMagicAttack";
+        private const string ToHitName = "ToHit";
+        private const string ToDeathName = "ToDeath";
+
         [SerializeField] private PlayerInput playerInput;
 
         private Animator animator;
-        private bool IsIdle, IsWalk, IsRun, IsPhysicAttack;
+        private bool IsIdle, IsWalk, IsRun, IsPhysicAttack, IsMagicAttack, IsHit, IsDeath;
 
         private void Awake()
         {
@@ -29,10 +34,8 @@ namespace Player
 
         private void Update()
         {
-            if (IsPhysicAttack)
+            if (IsPhysicAttack || IsMagicAttack || IsDeath)
                 return;
-
-            //вызвать смерть так же как атаку
 
             if (playerInput.IsIdle())
             {
@@ -50,41 +53,34 @@ namespace Player
                 }
             }
 
-            // Проверка на нажатие левой кнопки мыши
-            if (playerInput.IsPhysicAttack()) // Левая кнопка мыши
+            
+            if (playerInput.IsPhysicAttack()) 
             {
-                Play(PhysicAttackState); // Включаем анимацию атаки
+                Play(PhysicAttackState); 
             }
 
-            //считывание пробела для хита
+            if (playerInput.IsMagicAttack())
+            {
+                Play(MagicAttackState);
+            }
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Play(HitState);
             }
 
-            //считывание x для смерти
             if (Input.GetKeyDown(KeyCode.X))
             {
                 Play(DeathState);
             }
         }
 
-        private void PlayDeath()
-        {
-            //stop move
-        }
-
-        public void PlayHit()
-        {
-            //throw new NotImplementedException();
-        }
-
         private void Play(string state)
         {
-            if (IsPlaying(state)) // Проверяем, не проигрывается ли уже эта анимация
+            if (IsPlaying(state)) 
                 return;
 
-            ResetAllTriggers(); // Сбрасываем все триггеры
+            ResetAllTriggers(); 
             
             switch (state)
             {
@@ -100,6 +96,15 @@ namespace Player
                 case PhysicAttackState:
                     PlayPhysicAttack();
                     break;
+                case MagicAttackState:
+                    PlayMagicAttack();
+                    break;
+                case HitState:
+                    PlayHit();
+                    break;
+                case DeathState:
+                    PlayDeath();
+                    break;
             }
 
             SetPlaying(SadIdleState);
@@ -107,7 +112,7 @@ namespace Player
 
         private void PlaySadIdle()
         {
-            animator.SetTrigger(ToSadIdleName); // Активируем триггер для Sad Idle
+            animator.SetTrigger(ToSadIdleName); 
         }
 
         private void PlayWalk()
@@ -124,6 +129,24 @@ namespace Player
         {
             animator.SetTrigger(ToPhysicAttackName);
             StartCoroutine(CompletePhysicAttack());
+        }
+
+        private void PlayMagicAttack()
+        {
+            animator.SetTrigger(ToMagicAttackName);
+            StartCoroutine(CompleteMagicAttack());
+        }
+
+        public void PlayHit()
+        {
+            animator.SetTrigger(ToHitName);
+            StartCoroutine(CompleteHit());
+        }
+
+        private void PlayDeath()
+        {
+            animator.SetTrigger(ToDeathName);
+            playerInput.StopMove();
         }
 
         private void ResetAllTriggers()
@@ -149,6 +172,12 @@ namespace Player
                     return IsRun;
                 case PhysicAttackState:
                     return IsPhysicAttack;
+                case MagicAttackState:
+                    return IsMagicAttack;
+                case HitState:
+                    return IsHit;
+                case DeathState:
+                    return IsDeath;
             }
             return false;
         }
@@ -159,6 +188,9 @@ namespace Player
             IsWalk = false;
             IsRun = false;
             IsPhysicAttack = false;
+            IsMagicAttack = false;
+            IsHit = false;
+            IsDeath = false;
             switch (stateName)
             {
                 case SadIdleState:
@@ -174,6 +206,17 @@ namespace Player
                     IsPhysicAttack = true;
                     playerInput.StopMove();
                     break;
+                case MagicAttackState:
+                    IsMagicAttack = true;
+                    playerInput.StopMove();
+                    break;
+                case HitState:
+                    IsHit = true;
+                    break;
+                case DeathState:
+                    IsDeath = true;
+                    playerInput.StopMove();
+                    break;
             }
         }
 
@@ -182,6 +225,20 @@ namespace Player
             yield return new WaitForSeconds(2f);
             playerInput.ReleaseMove();
             IsPhysicAttack = false;
+        }
+
+        private IEnumerator CompleteMagicAttack()
+        {
+            yield return new WaitForSeconds(2f);
+            playerInput.ReleaseMove();
+            IsMagicAttack = false;
+        }
+
+        private IEnumerator CompleteHit()
+        {
+            yield return new WaitForSeconds(3f);
+            playerInput.ReleaseMove();
+            IsHit = false;
         }
     }
 }

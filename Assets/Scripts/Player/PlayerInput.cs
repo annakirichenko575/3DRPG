@@ -38,6 +38,11 @@ namespace Player
             return Input.GetMouseButtonDown(0);
         }
 
+        public bool IsMagicAttack()
+        {
+            return Input.GetMouseButtonDown(1);
+        }
+
         public void StopMove()
         {
             canMove = false;
