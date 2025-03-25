@@ -6,10 +6,23 @@ namespace Player
     {
         private Vector3 moveInput;
         private bool canMove;
+        private Vector2 mouseInput = Vector2.zero;
 
+        public Vector2 MouseInput => mouseInput;
         public Vector3 MoveInput => moveInput;
 
         private void Update()
+        {
+            UpdateMouseInput();
+            UpdateMoveInput();
+        }
+
+        private void UpdateMouseInput()
+        {
+            mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        }
+
+        private void UpdateMoveInput()
         {
             if (canMove)
             {

@@ -22,7 +22,13 @@ namespace Player
         private const string ToHitName = "ToHit";
         private const string ToDeathName = "ToDeath";
 
+        private const float HitDelay = 0.5f;
+        private const float PhysicDelay = 2f;
+        private const float MagicDelay = 2f;
+
+
         [SerializeField] private PlayerInput playerInput;
+        [SerializeField] private HealthPoints healthPoints;
 
         private Animator animator;
         private bool IsIdle, IsWalk, IsRun, IsPhysicAttack, IsMagicAttack, IsHit, IsDeath;
@@ -30,11 +36,13 @@ namespace Player
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            healthPoints.OnHit += Hit;
+            healthPoints.OnDie += Die;
         }
 
         private void Update()
         {
-            if (IsPhysicAttack || IsMagicAttack || IsDeath)
+            if (IsPhysicAttack || IsMagicAttack || IsHit || IsDeath)
                 return;
 
             if (playerInput.IsIdle())
@@ -63,17 +71,18 @@ namespace Player
             {
                 Play(MagicAttackState);
             }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Play(HitState);
-            }
-
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                Play(DeathState);
-            }
         }
+
+        private void Hit()
+        {
+            Play(HitState);
+        }
+
+        private void Die()
+        {
+            Play(DeathState);
+        }
+
 
         private void Play(string state)
         {
@@ -107,7 +116,7 @@ namespace Player
                     break;
             }
 
-            SetPlaying(SadIdleState);
+            SetPlaying(state);
         }
 
         private void PlaySadIdle()
@@ -212,6 +221,7 @@ namespace Player
                     break;
                 case HitState:
                     IsHit = true;
+                    playerInput.StopMove();
                     break;
                 case DeathState:
                     IsDeath = true;
@@ -222,21 +232,21 @@ namespace Player
 
         private IEnumerator CompletePhysicAttack()
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(PhysicDelay);
             playerInput.ReleaseMove();
             IsPhysicAttack = false;
         }
 
         private IEnumerator CompleteMagicAttack()
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(MagicDelay);
             playerInput.ReleaseMove();
             IsMagicAttack = false;
         }
 
         private IEnumerator CompleteHit()
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(HitDelay);
             playerInput.ReleaseMove();
             IsHit = false;
         }

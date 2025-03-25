@@ -5,24 +5,43 @@ namespace Player
     public class MouseRotation : MonoBehaviour
     {
         [SerializeField] private float mouseSensitivi = 100f;
-        [SerializeField] private Transform playerBody; //поворот тела перса с камерой
+        [SerializeField] private Transform playerBody; 
         [SerializeField] private float xRotation = 0f;
+        [SerializeField] private PlayerInput playerInput;
+        [SerializeField] private HealthPoints healthPoints;
 
         private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked; //при запуске курсор исчезает, при нажатии esc появляется
+            Cursor.lockState = CursorLockMode.Locked; 
         }
 
         private void Update()
         {
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivi * Time.deltaTime; //ввод по оси X
-            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivi * Time.deltaTime; //ввод по оси Y
+            if (healthPoints.IsDeath)
+            {
+                xRotation = 47f;
+                XRotate(xRotation);
+                return;
+            }
 
-            xRotation -= mouseY; //уменьшаем угол вращения в зависимости от движения мыши
-            xRotation = Mathf.Clamp(xRotation, -80f, 80f); //чтобы не вращаться вечно, максимум на 90 градусов
+            float mouseX = playerInput.MouseInput.x * mouseSensitivi * Time.deltaTime;
+            float mouseY = playerInput.MouseInput.y * mouseSensitivi * Time.deltaTime;
 
-            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f); //применяем вращение к камере
-            playerBody.Rotate(Vector3.up * mouseX); //можем двигаться бесконечно, применяем к персу
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -80f, 80f);
+
+            YRotate(mouseX);
+            XRotate(xRotation);
+        }
+
+        private void YRotate(float Yaw)
+        {
+            playerBody.Rotate(Vector3.up * Yaw);
+        }
+
+        private void XRotate(float pitch)
+        {
+            transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
         }
     }
 }
