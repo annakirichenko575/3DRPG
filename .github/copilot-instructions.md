@@ -8,7 +8,7 @@
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI, Player, Obstacles
 - Active game object:
-  - Name: HP
-  - Tag: Untagged
+  - Name: Cube test mana
+  - Tag: mana
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
