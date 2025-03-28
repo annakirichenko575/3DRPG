@@ -1,15 +1,17 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using UnityEngine.UI;
 
 namespace Player
 {
     public class HealthPoints : MonoBehaviour
     {
-        [SerializeField] private int maxHealth = 100;
+        [SerializeField] public static int maxHealth = 100;
         [SerializeField] private float hitInvincibilityTime = 2f;
+        [SerializeField] private Image healthBar;
 
-        private int health;
+        public static int health;
         private bool isDeath;
         private bool isInvincible;
 
@@ -21,7 +23,7 @@ namespace Player
         public bool IsInvincible => isInvincible;
 
 
-        private void Awake()
+        private void Start()
         {
             health = maxHealth;
         }
@@ -40,7 +42,7 @@ namespace Player
                 return;
 
             health -= damage;
-            health = Mathf.Clamp(health, 0, maxHealth);
+            healthBar.fillAmount -= damage/100f;
             if (health == 0)
             {
                 isDeath = true;

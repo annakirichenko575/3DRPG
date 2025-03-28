@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using Palmmedia.ReportGenerator.Core.Reporting.Builders;
+using Player;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    Image healthBar;
-    [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float HP;
+    [SerializeField] private Image healthBar;
+    [SerializeField] private int _maxHealth = HealthPoints.maxHealth;
+    [SerializeField] public static float _HP;
+    
     void Start()
     {
         healthBar = GetComponent<Image>();
-        HP = maxHealth;
+        _HP = _maxHealth;
     }
 
     void Update()
     {
-        healthBar.fillAmount = HP/maxHealth;
+        _HP = HealthPoints.health;
+        healthBar.fillAmount = _HP/_maxHealth;      
     }
 }
