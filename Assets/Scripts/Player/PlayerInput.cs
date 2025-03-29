@@ -11,6 +11,8 @@ namespace Player
         public Vector2 MouseInput => mouseInput;
         public Vector3 MoveInput => moveInput;
 
+        
+
         private void Update()
         {
             UpdateMouseInput();
