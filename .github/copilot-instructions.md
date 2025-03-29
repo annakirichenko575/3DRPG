@@ -4,11 +4,11 @@
 - Active scene:
   - Name: DemoCharacter
   - Tags:
-    - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, damage, mana, heal
+    - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, damage, mana, heal, Enemy
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI, Player, Obstacles
 - Active game object:
-  - Name: Cube test mana
-  - Tag: mana
-  - Layer: Default
+  - Name: Text (TMP)
+  - Tag: Untagged
+  - Layer: UI
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
