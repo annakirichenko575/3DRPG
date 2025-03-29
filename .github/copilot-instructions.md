@@ -4,11 +4,11 @@
 - Active scene:
   - Name: DemoCharacter
   - Tags:
-    - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, damage, mana, heal, Enemy
+    - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, damage, mana, heal, Enemy, FxTemporaire
   - Layers:
-    - Default, TransparentFX, Ignore Raycast, Water, UI, Player, Obstacles
+    - Default, TransparentFX, Ignore Raycast, Water, UI, Player, Obstacles, Enemy
 - Active game object:
-  - Name: Text (TMP)
+  - Name: UI
   - Tag: Untagged
-  - Layer: UI
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

@@ -8,15 +8,45 @@ namespace Player
         private bool canMove;
         private Vector2 mouseInput = Vector2.zero;
 
+        private bool magicOnCooldown;
+        [SerializeField] public float _currentMagicCooldown;
+        [SerializeField] public float _maxMagicCooldown;
+
         public Vector2 MouseInput => mouseInput;
         public Vector3 MoveInput => moveInput;
 
-        
+        void Start()
+        {
+            magicOnCooldown = false;
+            _currentMagicCooldown = 0f;
+            _maxMagicCooldown = 2f;
+        }
 
         private void Update()
         {
             UpdateMouseInput();
             UpdateMoveInput();
+            DropCooldown();
+
+            if (IsMagicAttack())
+                SetCooldown();
+        }
+
+        private void SetCooldown(){
+            _currentMagicCooldown = _maxMagicCooldown;
+            magicOnCooldown = true;
+        }
+
+        private void DropCooldown(){
+            if (_currentMagicCooldown == 0f)
+                magicOnCooldown = false;
+            else{
+                if (_currentMagicCooldown > 0f)
+                    _currentMagicCooldown -= Time.deltaTime;
+                if (_currentMagicCooldown <= 0f)
+                    _currentMagicCooldown = 0f;
+            }
+                
         }
 
         private void UpdateMouseInput()
@@ -55,7 +85,10 @@ namespace Player
 
         public bool IsMagicAttack()
         {
-            return Input.GetMouseButtonDown(1);
+            if (magicOnCooldown == false && ManaSpend.mana >0)
+                return Input.GetMouseButtonDown(1);
+            
+            return false;
         }
 
         public void StopMove()

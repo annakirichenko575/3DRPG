@@ -10,6 +10,7 @@ namespace Player {
     public class ManaSpend : MonoBehaviour {
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private UnityEngine.UI.Image manaBar;
+        [SerializeField] private UnityEngine.UI.Image _cooldownIcon;
 
         public static float mana;
 
@@ -19,6 +20,7 @@ namespace Player {
         {
             mana = maxMana;
             manaBar.fillAmount = mana/maxMana;
+            _cooldownIcon.fillAmount = 0f;
         }
 
         void Update()
@@ -27,6 +29,8 @@ namespace Player {
                 mana -= 20f;
                 manaBar.fillAmount = mana/maxMana;
             }
+
+            _cooldownIcon.fillAmount = playerInput._currentMagicCooldown/playerInput._maxMagicCooldown;
         }
 
         void OnTriggerEnter(Collider other) {
@@ -37,8 +41,6 @@ namespace Player {
                 manaBar.fillAmount = mana/maxMana;
             }
         }
-
-
     }
 }
 
