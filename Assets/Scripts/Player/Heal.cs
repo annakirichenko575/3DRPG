@@ -7,18 +7,15 @@ using UnityEngine.UI;
 
 public class Heal : MonoBehaviour
 {
+    [SerializeField] private int heal = 10;
     [SerializeField] private Image healthBar;
     
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "heal") {
-            HealthPoints.health += 10;
-            if (HealthPoints.health >= HealthPoints.maxHealth){
-                healthBar.fillAmount = 1f;
-                HealthPoints.health = HealthPoints.maxHealth;
-            }
-            healthBar.fillAmount += 10f/HealthPoints.maxHealth;
+        if (other.tag == "Player") {
+            HealthPoints healthPoints = other.GetComponent<HealthPoints>();
+            healthPoints.Heal(heal);
         }
     }
 }
