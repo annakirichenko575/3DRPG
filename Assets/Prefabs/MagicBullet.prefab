@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5420594955076972815}
   - component: {fileID: 3709902510034462195}
   - component: {fileID: 7104579298284828906}
+  - component: {fileID: 7767085791962815580}
   m_Layer: 0
   m_Name: MagicBullet
   m_TagString: Untagged
@@ -51,7 +52,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 941435749049730702}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -134,6 +135,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7767085791962815580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941435749049730702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f0e34819359ea42af2589814400bab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 30
+  lifetime: 3
 --- !u!1001 &5206289641125322646
 PrefabInstance:
   m_ObjectHideFlags: 0
