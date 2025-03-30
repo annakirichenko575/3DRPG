@@ -42,6 +42,7 @@ namespace Player {
                 if (mana >= maxMana)
                     mana = maxMana;
                 manaBar.fillAmount = mana/maxMana;
+
             }
         }
     }
