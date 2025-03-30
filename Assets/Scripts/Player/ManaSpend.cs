@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 namespace Player {
     public class ManaSpend : MonoBehaviour {
+        private const float coast = 10f;
+        private const float restoreCount = 40f;
+
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private UnityEngine.UI.Image manaBar;
         [SerializeField] private UnityEngine.UI.Image _cooldownIcon;
@@ -26,7 +29,7 @@ namespace Player {
         void Update()
         {
             if (playerInput.IsMagicAttack()){
-                mana -= 20f;
+                mana -= coast;
                 manaBar.fillAmount = mana/maxMana;
             }
 
@@ -35,7 +38,7 @@ namespace Player {
 
         void OnTriggerEnter(Collider other) {
             if (other.tag == "mana") {
-                mana += 10f;
+                mana += restoreCount;
                 if (mana >= maxMana)
                     mana = maxMana;
                 manaBar.fillAmount = mana/maxMana;

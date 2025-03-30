@@ -17,6 +17,7 @@ namespace Player
 
         private void MagicAttack()
         {
+
             // Находим ближайшего врага
             GameObject nearestEnemy = FindNearestEnemy();
 

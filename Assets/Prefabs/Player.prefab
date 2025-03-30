@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 2696409426332625069}
   - component: {fileID: 3902308967601785789}
   - component: {fileID: 4388984509904908725}
+  - component: {fileID: 8093281160219757883}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -154,6 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc6614d7bcdaa24fbf7c8a75316c7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentMagicCooldown: 0
+  _maxMagicCooldown: 0
 --- !u!114 &6997093887912292689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 3737567143415928456}
   manaBar: {fileID: 1480846620102477465}
+  _cooldownIcon: {fileID: 7752470267432512672}
 --- !u!114 &3902308967601785789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +201,21 @@ MonoBehaviour:
   run: 5
   dwarf: {fileID: 768787168157660811}
 --- !u!114 &4388984509904908725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949770686022085726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53ad0c2e2182d74ca685bcd20e62f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthPoints: {fileID: 6997093887912292689}
+  _restartScreen: {fileID: 0}
+  _playerUI: {fileID: 5064568794250823025}
+--- !u!114 &8093281160219757883
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,7 +256,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2919557700171044149}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 108.6}
+  m_LocalPosition: {x: 0, y: 0, z: 108.5}
   m_LocalScale: {x: 0.54999, y: 0.54999, z: 0.54999}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -245,7 +264,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -504.3, y: 153.2}
+  m_AnchoredPosition: {x: -503.8, y: 154.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &660295582982381944
@@ -444,11 +463,10 @@ GameObject:
   - component: {fileID: 674412574429213598}
   - component: {fileID: 6486725758561864996}
   - component: {fileID: 4939542197876140153}
-  - component: {fileID: 4059048593078437107}
   m_Layer: 0
   m_Name: SphereZone
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -517,27 +535,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4059048593078437107
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4419637740485981508}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4869561499656006910
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +604,7 @@ MonoBehaviour:
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -1186,7 +1183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackZone: {fileID: 1263965274020043084}
   magicBulletPrefab: {fileID: 941435749049730702, guid: 65e5b8bab9df29642b94431840f27a9e, type: 3}
-  firePoint: {fileID: 0}
+  firePoint: {fileID: 674412574429213598}
   bulletSpeed: 20
   enemyMask:
     serializedVersion: 2
