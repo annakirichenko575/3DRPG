@@ -43,6 +43,10 @@ public class AIMagController : MonoBehaviour
     private float nextFireTime = 0f;
     public float fireRate = 1f;
 
+    //доделать, чтоб в начале при патрулировании не активировалась изначально пуля
+    private float attackCooldown = 2f; 
+    private float lastAttackTime = 0f;
+
     void Start()
     {
         m_PlayerPosition = Vector3.zero;
@@ -65,20 +69,24 @@ public class AIMagController : MonoBehaviour
 
     void Update()
     {
+        if (firePoint == null)
+        {
+            FindFirePoint();
+        }
+
         EnviromentView();
 
-        // Проверяем, если игрок в радиусе атаки, и можем ли мы стрелять
         if (m_PlayerInRange && Vector3.Distance(transform.position, m_PlayerPosition) <= attackRadius)
         {
             m_IsAttacking = true;
             m_IsPatrol = false;
             navMeshAgent.SetDestination(transform.position);
 
-            // Стреляем, если прошло достаточно времени для следующего выстрела
             if (Time.time >= nextFireTime)
             {
                 Attack();
-                nextFireTime = Time.time + 1f / fireRate; // Устанавливаем время для следующего выстрела
+                nextFireTime = Time.time + 1f / fireRate;
+                lastAttackTime = Time.time; 
             }
         }
         else if (m_PlayerInRange)
@@ -89,12 +97,26 @@ public class AIMagController : MonoBehaviour
         }
         else
         {
-            m_IsAttacking = false;
-            m_IsPatrol = true;
-            Patroling();
+            if (Time.time - lastAttackTime >= attackCooldown)
+            {
+                m_IsAttacking = false;
+                m_IsPatrol = true;
+                Patroling();
+            }
         }
 
         UpdateAnimations();
+    }
+
+
+    void FindFirePoint()
+    {
+        firePoint = transform.Find("FirePoint"); 
+
+        if (firePoint == null)
+        {
+            Debug.LogError("FirePoint not found! Assign it manually in the Inspector.");
+        }
     }
 
     private void UpdateAnimations()
@@ -178,12 +200,13 @@ public class AIMagController : MonoBehaviour
     {
         if (bulletPrefab != null && firePoint != null)
         {
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            Vector3 spawnPosition = transform.position + Vector3.up * 2f; 
+            GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
             Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
 
             if (bulletRigidbody != null)
             {
-                Vector3 direction = (m_PlayerPosition - firePoint.position).normalized;
+                Vector3 direction = (m_PlayerPosition - spawnPosition).normalized;
                 bulletRigidbody.velocity = direction * bulletSpeed;
             }
             else
@@ -193,13 +216,10 @@ public class AIMagController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Bullet prefab or fire point is not assigned.");
+            Debug.LogError("Bullet prefab or fire point is not assigned in the Inspector.");
         }
-
-        // Убираем сброс флага м_IsAttacking
-        // m_IsAttacking = false; // Не сбрасываем, так как это не нужно для постоянной стрельбы
-        m_CaughtPlayer = false;
     }
+
 
     void Move(float speed)
     {

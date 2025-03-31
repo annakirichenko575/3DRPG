@@ -147,8 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f70f6b0cb62fdd40b5cbcd9e7cfff2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyDelay: 5
-  impactEffect: {fileID: 0}
+  damage: 10
+  lifetime: 3
 --- !u!1001 &5030882600933530349
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -171,15 +171,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6096757213908423747, guid: 709b0bd6b0b625249a98409dd7a87343, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.003571017
+      value: 0.76
       objectReference: {fileID: 0}
     - target: {fileID: 6096757213908423747, guid: 709b0bd6b0b625249a98409dd7a87343, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.2042459
+      value: 0.36
       objectReference: {fileID: 0}
     - target: {fileID: 6096757213908423747, guid: 709b0bd6b0b625249a98409dd7a87343, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.9685
+      value: -1.97
       objectReference: {fileID: 0}
     - target: {fileID: 6096757213908423747, guid: 709b0bd6b0b625249a98409dd7a87343, type: 3}
       propertyPath: m_LocalRotation.w
