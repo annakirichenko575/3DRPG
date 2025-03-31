@@ -10,6 +10,7 @@ namespace Enemy
     {
         [SerializeField] public static int maxHealth = 100;
         [SerializeField] private float hitInvincibilityTime = 0.5f;
+        [SerializeField] private Animator enemyAnimator;
 
         private int health;
         private bool isDeath;
@@ -53,6 +54,7 @@ namespace Enemy
             {
                 isDeath = true;
                 OnDie?.Invoke();
+                StartCoroutine(DieAnimationCoroutine());
                 Debug.Log("EnemyDeath");
             }
             else
@@ -73,6 +75,18 @@ namespace Enemy
             isInvincible = true;
             yield return new WaitForSeconds(hitInvincibilityTime);
             isInvincible = false;
+        }
+
+        private IEnumerator DieAnimationCoroutine()
+        {
+            if (enemyAnimator != null)
+            {
+                enemyAnimator.SetBool("isDead", true); 
+            }
+
+            yield return new WaitForSeconds(3f);
+
+            Destroy(gameObject);
         }
     }
 }
