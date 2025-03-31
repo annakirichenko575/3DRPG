@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AIController : MonoBehaviour
+public class AIController2 : MonoBehaviour
 {
     public NavMeshAgent navMeshAgent;
     public float startWaitTime = 4;
@@ -35,6 +35,7 @@ public class AIController : MonoBehaviour
     bool m_CaughtPlayer;
 
     private Animator animator;
+    public bool IsPlayerInRange => m_PlayerInRange;
 
     void Start()
     {

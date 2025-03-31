@@ -51,22 +51,25 @@ namespace Player
         public void Hit(int damage)
         {
             if (isDeath || isInvincible)
+            {
                 return;
+            }
 
             health -= damage;
             HealthClamp();
-            
+
             if (health == 0)
             {
                 isDeath = true;
-                OnDie.Invoke();
+                OnDie?.Invoke();
             }
             else
             {
                 StartCoroutine(InvincibilityRoutine());
-                OnHit.Invoke();
+                OnHit?.Invoke();
             }
         }
+
 
         private void HealthClamp()
         {

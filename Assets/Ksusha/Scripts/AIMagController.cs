@@ -13,8 +13,7 @@ public class AIMagController : MonoBehaviour
 
     public float viewRadius = 15;
     public float viewAngle = 90;
-    //атака расстоянике
-    //public float attackRadius = 10f;
+
     public LayerMask playerMask;
     public LayerMask obstacleMask;
     public float meshResolution = 1f;
@@ -37,13 +36,12 @@ public class AIMagController : MonoBehaviour
 
     private Animator animator;
 
-    public GameObject bulletPrefab; 
-    public Transform firePoint; 
-    public float attackRadius = 10f; 
-    public float bulletSpeed = 20f; 
-    private float nextFireTime = 0f; 
-    public float fireRate = 1f; 
-    private GameObject currentBullet; 
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    public float attackRadius = 10f;
+    public float bulletSpeed = 20f;
+    private float nextFireTime = 0f;
+    public float fireRate = 1f;
 
     void Start()
     {
@@ -69,19 +67,19 @@ public class AIMagController : MonoBehaviour
     {
         EnviromentView();
 
-        if (m_IsAttacking)
-        {
-            if (Time.time >= nextFireTime && currentBullet == null)
-            {
-                Attack();
-                nextFireTime = Time.time + 1f / fireRate;
-            }
-        }
-        else if (m_PlayerInRange && Vector3.Distance(transform.position, m_PlayerPosition) <= attackRadius)
+        // Проверяем, если игрок в радиусе атаки, и можем ли мы стрелять
+        if (m_PlayerInRange && Vector3.Distance(transform.position, m_PlayerPosition) <= attackRadius)
         {
             m_IsAttacking = true;
             m_IsPatrol = false;
-            navMeshAgent.SetDestination(transform.position); 
+            navMeshAgent.SetDestination(transform.position);
+
+            // Стреляем, если прошло достаточно времени для следующего выстрела
+            if (Time.time >= nextFireTime)
+            {
+                Attack();
+                nextFireTime = Time.time + 1f / fireRate; // Устанавливаем время для следующего выстрела
+            }
         }
         else if (m_PlayerInRange)
         {
@@ -174,6 +172,8 @@ public class AIMagController : MonoBehaviour
         }
     }
 
+
+
     private void Attack()
     {
         if (bulletPrefab != null && firePoint != null)
@@ -196,8 +196,9 @@ public class AIMagController : MonoBehaviour
             Debug.LogError("Bullet prefab or fire point is not assigned.");
         }
 
-        m_IsAttacking = false;
-        m_CaughtPlayer = false; 
+        // Убираем сброс флага м_IsAttacking
+        // m_IsAttacking = false; // Не сбрасываем, так как это не нужно для постоянной стрельбы
+        m_CaughtPlayer = false;
     }
 
     void Move(float speed)
