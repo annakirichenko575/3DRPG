@@ -6,6 +6,9 @@ namespace Player
 {
     public class AnimationPresenter : MonoBehaviour
     {
+        public event Action OnPhysicAttack;
+        public event Action OnMagicAttack;
+
         private const string SadIdleState = "SadIdle";
         private const string WalkState = "Walking";
         private const string RunState = "Run";
@@ -137,12 +140,14 @@ namespace Player
         private void PlayPhysicAttack()
         {
             animator.SetTrigger(ToPhysicAttackName);
+            OnPhysicAttack?.Invoke();
             StartCoroutine(CompletePhysicAttack());
         }
 
         private void PlayMagicAttack()
         {
             animator.SetTrigger(ToMagicAttackName);
+            OnMagicAttack?.Invoke();
             StartCoroutine(CompleteMagicAttack());
         }
 
