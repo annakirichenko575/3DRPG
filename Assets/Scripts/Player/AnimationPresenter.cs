@@ -70,7 +70,8 @@ namespace Player
                 Play(PhysicAttackState); 
             }
 
-            if (playerInput.IsMagicAttack())
+            
+            if (playerInput.IsMagicAttack)
             {
                 Play(MagicAttackState);
             }

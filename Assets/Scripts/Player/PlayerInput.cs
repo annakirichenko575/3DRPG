@@ -4,18 +4,22 @@ namespace Player
 {
     public class PlayerInput : MonoBehaviour
     {
+        [SerializeField] private float _currentMagicCooldown;
+        [SerializeField] private float _maxMagicCooldown;
+
         private Vector3 moveInput;
         private bool canMove;
         private Vector2 mouseInput = Vector2.zero;
-
         private bool magicOnCooldown;
-        [SerializeField] public float _currentMagicCooldown;
-        [SerializeField] public float _maxMagicCooldown;
+        private bool isMagickAttack;
 
         public Vector2 MouseInput => mouseInput;
         public Vector3 MoveInput => moveInput;
+        public float FillAmount => _currentMagicCooldown / _maxMagicCooldown;
+        public bool IsMagicAttack => isMagickAttack;
 
-        void Start()
+
+        private void Start()
         {
             magicOnCooldown = false;
             _currentMagicCooldown = 0f;
@@ -28,7 +32,7 @@ namespace Player
             UpdateMoveInput();
             DropCooldown();
 
-            if (IsMagicAttack())
+            if (CheckMagicAttack())
                 SetCooldown();
         }
 
@@ -38,7 +42,7 @@ namespace Player
         }
 
         private void DropCooldown(){
-            if (_currentMagicCooldown == 0f)
+            if (_currentMagicCooldown <= 0f)
                 magicOnCooldown = false;
             else{
                 if (_currentMagicCooldown > 0f)
@@ -67,6 +71,15 @@ namespace Player
                 moveInput = Vector3.zero;
             }
         }
+        private bool CheckMagicAttack()
+        {
+            isMagickAttack = false;
+            if (magicOnCooldown == false && ManaSpend.mana >0)
+                isMagickAttack = Input.GetMouseButtonDown(1);
+            
+            return isMagickAttack;
+        }
+
 
         public bool IsIdle()
         {
@@ -81,14 +94,6 @@ namespace Player
         public bool IsPhysicAttack()
         {
             return Input.GetMouseButtonDown(0);
-        }
-
-        public bool IsMagicAttack()
-        {
-            if (magicOnCooldown == false && ManaSpend.mana >0)
-                return Input.GetMouseButtonDown(1);
-            
-            return false;
         }
 
         public void StopMove()

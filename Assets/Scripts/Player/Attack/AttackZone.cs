@@ -21,10 +21,23 @@ namespace Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out Enemy.HealthPoints healthPoints))
+            Enemy.HealthPoints healthPoints = GetEnemyHealthPoints(other);
+
+            if (healthPoints != null)
             {
                 healthPoints.Hit(damage);
             }
+        }
+
+        private Enemy.HealthPoints GetEnemyHealthPoints(Collider other)
+        {
+            Enemy.HealthPoints healthPoints = other.GetComponent<Enemy.HealthPoints>();
+            if (healthPoints == null)
+            {
+                healthPoints = other.GetComponentInParent<Enemy.HealthPoints>();
+            }
+
+            return healthPoints;
         }
 
         public void Attack()

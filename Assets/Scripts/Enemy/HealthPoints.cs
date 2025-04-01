@@ -8,14 +8,13 @@ namespace Enemy
 {
     public class HealthPoints : MonoBehaviour
     {
-        [SerializeField] public static int maxHealth = 100;
+        [SerializeField] private int maxHealth = 100;
         [SerializeField] private float hitInvincibilityTime = 0.5f;
         [SerializeField] private Animator enemyAnimator;
 
         private int health;
         private bool isDeath;
         private bool isInvincible;
-
 
         public event UnityAction OnHeal;
         public event UnityAction OnHit;

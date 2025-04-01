@@ -9,7 +9,7 @@ namespace Player
     public class HealthPoints : MonoBehaviour
     {
         [SerializeField] public static int maxHealth = 100;
-        [SerializeField] private float hitInvincibilityTime = 0.5f;
+        [SerializeField] private float hitInvincibilityTime = 2f;
 
         private int health;
         private bool isDeath;

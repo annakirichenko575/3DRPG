@@ -24,15 +24,29 @@ namespace Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out Enemy.HealthPoints healthPoints))
+            Debug.Log(other.gameObject.name);
+            Enemy.HealthPoints healthPoints = GetEnemyHealthPoints(other);
+
+            if (healthPoints != null)
             {
                 healthPoints.Hit(damage);
-            }
-            
-            if (!other.CompareTag("Player")) 
-            {
                 Destroy(gameObject);
             }
+            
+            /*if (!other.CompareTag("Player")) 
+            {
+            }*/
+        }
+
+        private Enemy.HealthPoints GetEnemyHealthPoints(Collider other)
+        {
+            Enemy.HealthPoints healthPoints = other.GetComponent<Enemy.HealthPoints>();
+            if (healthPoints == null)
+            {
+                healthPoints = other.GetComponentInParent<Enemy.HealthPoints>();
+            }
+
+            return healthPoints;
         }
     }
 }

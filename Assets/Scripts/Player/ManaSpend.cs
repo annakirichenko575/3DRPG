@@ -28,12 +28,12 @@ namespace Player {
 
         void Update()
         {
-            if (playerInput.IsMagicAttack()){
+            if (playerInput.IsMagicAttack){
                 mana -= coast;
                 manaBar.fillAmount = mana/maxMana;
             }
 
-            _cooldownIcon.fillAmount = playerInput._currentMagicCooldown/playerInput._maxMagicCooldown;
+            _cooldownIcon.fillAmount = playerInput.FillAmount;
         }
 
         void OnTriggerEnter(Collider other) {
