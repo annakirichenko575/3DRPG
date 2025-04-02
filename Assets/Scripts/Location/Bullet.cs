@@ -5,8 +5,8 @@ using Player;
 
 public class Bullet : MonoBehaviour
 {
-    public float damage = 10f;
-    public float lifetime = 3f;
+    [SerializeField] private float damage = 10f;
+    [SerializeField] private float lifetime = 3f;
 
     void Start()
     {

@@ -5,66 +5,63 @@ using UnityEngine.AI;
 
 public class AIMagController : MonoBehaviour
 {
-    public NavMeshAgent navMeshAgent;
-    public float startWaitTime = 4;
-    public float timeToRotate = 2;
-    public float speedWalk = 6;
-    public float speedRun = 9;
+    [SerializeField] private NavMeshAgent navMeshAgent;
+    [SerializeField] private float startWaitTime = 4;
+    [SerializeField] private float timeToRotate = 2;
+    [SerializeField] private float speedWalk = 6;
+    [SerializeField] private float speedRun = 9;
 
-    public float viewRadius = 15;
-    public float viewAngle = 90;
+    [SerializeField] private float viewRadius = 15;
+    [SerializeField] private float viewAngle = 90;
 
-    public LayerMask playerMask;
-    public LayerMask obstacleMask;
-    public float meshResolution = 1f;
-    public int edgeIterations = 4;
-    public float edgeDistance = 0.5f;
+    [SerializeField] private LayerMask playerMask;
+    [SerializeField] private LayerMask obstacleMask;
 
-    public Transform[] waypoints;
-    int m_CurrentWaypointIndex;
+    [SerializeField] private Transform[] waypoints;
+    private int mgCurrentWaypointIndex;
 
     Vector3 playerLastPosition = Vector3.zero;
-    Vector3 m_PlayerPosition;
+    Vector3 mgPlayerPosition;
 
-    float m_WaitTime;
-    float m_TimeToRotate;
-    bool m_PlayerInRange;
-    bool m_PlayerNear;
-    bool m_IsPatrol;
-    bool m_CaughtPlayer;
-    bool m_IsAttacking;
+    private float mgWaitTime;
+    private float mgTimeToRotate;
+    private bool mgPlayerInRange;
+    private bool mgPlayerNear;
+    private bool mgIsPatrol;
+    private bool mgCaughtPlayer;
+    private bool mgIsAttacking;
 
     private Animator animator;
 
-    public GameObject bulletPrefab;
-    public Transform firePoint;
-    public float attackRadius = 10f;
-    public float bulletSpeed = 20f;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private float attackRadius = 8f;
+    [SerializeField] private float bulletSpeed = 20f;
     private float nextFireTime = 2f;
-    public float fireRate = 1f;
+    [SerializeField] private float fireRate = 1.5f;
 
-    //доделать, чтоб в начале при патрулировании не активировалась изначально пуля
-    private float attackCooldown = 2f; 
+    private float attackCooldown = 2f;
     private float lastAttackTime = 0f;
 
     void Start()
     {
-        m_PlayerPosition = Vector3.zero;
-        m_IsPatrol = true;
-        m_CaughtPlayer = false;
-        m_IsAttacking = false;
-        m_PlayerInRange = false;
-        m_WaitTime = startWaitTime;
-        m_TimeToRotate = timeToRotate;
+        mgPlayerPosition = Vector3.zero;
+        mgIsPatrol = true;
+        mgCaughtPlayer = false;
+        mgIsAttacking = false;
+        mgPlayerInRange = false;
+        mgWaitTime = startWaitTime;
+        mgTimeToRotate = timeToRotate;
 
-        m_CurrentWaypointIndex = 0;
+        mgCurrentWaypointIndex = 0;
         navMeshAgent = GetComponent<NavMeshAgent>();
 
         navMeshAgent.isStopped = false;
         navMeshAgent.speed = speedWalk;
-        navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+        navMeshAgent.SetDestination(waypoints[mgCurrentWaypointIndex].position);
 
         animator = GetComponent<Animator>();
+        DisableExistingBullets();
     }
 
     void Update()
@@ -76,31 +73,31 @@ public class AIMagController : MonoBehaviour
 
         EnviromentView();
 
-        if (m_PlayerInRange && Vector3.Distance(transform.position, m_PlayerPosition) <= attackRadius)
+        if (mgPlayerInRange && Vector3.Distance(transform.position, mgPlayerPosition) <= attackRadius)
         {
-            m_IsAttacking = true;
-            m_IsPatrol = false;
+            mgIsAttacking = true;
+            mgIsPatrol = false;
             navMeshAgent.SetDestination(transform.position);
 
             if (Time.time >= nextFireTime)
             {
                 Attack();
                 nextFireTime = Time.time + 1f / fireRate;
-                lastAttackTime = Time.time; 
+                lastAttackTime = Time.time;
             }
         }
-        else if (m_PlayerInRange)
+        else if (mgPlayerInRange)
         {
-            m_IsAttacking = false;
-            m_IsPatrol = false;
+            mgIsAttacking = false;
+            mgIsPatrol = false;
             Chasing();
         }
         else
         {
             if (Time.time - lastAttackTime >= attackCooldown)
             {
-                m_IsAttacking = false;
-                m_IsPatrol = true;
+                mgIsAttacking = false;
+                mgIsPatrol = true;
                 Patroling();
             }
         }
@@ -108,10 +105,9 @@ public class AIMagController : MonoBehaviour
         UpdateAnimations();
     }
 
-
     void FindFirePoint()
     {
-        firePoint = transform.Find("FirePoint"); 
+        firePoint = transform.Find("FirePoint");
 
         if (firePoint == null)
         {
@@ -119,94 +115,112 @@ public class AIMagController : MonoBehaviour
         }
     }
 
-    private void UpdateAnimations()
+    void UpdateAnimations()
     {
-        animator.SetBool("isPatroling", m_IsPatrol && navMeshAgent.velocity.magnitude > 0.1f);
-        animator.SetBool("isChasing", !m_IsPatrol && navMeshAgent.velocity.magnitude > 0.1f);
-        animator.SetBool("isAttacking", m_PlayerInRange && Vector3.Distance(transform.position, m_PlayerPosition) <= 10f);
+        bool isInAttackRange = Vector3.Distance(transform.position, mgPlayerPosition) <= attackRadius;
+
+        if (isInAttackRange)
+        {
+            animator.SetBool("isAttacking", true);
+            animator.SetBool("isPatroling", false);
+            animator.SetBool("isChasing", false);
+        }
+        else if (mgPlayerInRange)
+        {
+            animator.SetBool("isAttacking", false);
+            animator.SetBool("isPatroling", false);
+            animator.SetBool("isChasing", true);
+        }
+        else
+        {
+            if (mgIsPatrol && navMeshAgent.velocity.magnitude > 0.1f)
+            {
+                animator.SetBool("isPatroling", true);
+                animator.SetBool("isChasing", false);
+                animator.SetBool("isAttacking", false);
+            }
+        }
     }
 
-    private void Chasing()
+    void Chasing()
     {
-        m_PlayerNear = false;
+        mgPlayerNear = false;
         playerLastPosition = Vector3.zero;
-        if (!m_CaughtPlayer)
+        if (!mgCaughtPlayer)
         {
             Move(speedRun);
-            navMeshAgent.SetDestination(m_PlayerPosition);
+            navMeshAgent.SetDestination(mgPlayerPosition);
         }
         if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            if (m_WaitTime <= 0 && !m_CaughtPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
+            if (mgWaitTime <= 0 && !mgCaughtPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
             {
-                m_IsPatrol = true;
-                m_PlayerNear = false;
+                mgIsPatrol = true;
+                mgPlayerNear = false;
                 Move(speedWalk);
-                m_TimeToRotate = timeToRotate;
-                m_WaitTime = startWaitTime;
-                navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+                mgTimeToRotate = timeToRotate;
+                mgWaitTime = startWaitTime;
+                navMeshAgent.SetDestination(waypoints[mgCurrentWaypointIndex].position);
             }
             else
             {
                 if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 2.5f)
                 {
                     Stop();
-                    m_WaitTime -= Time.deltaTime;
+                    mgWaitTime -= Time.deltaTime;
                 }
             }
         }
     }
 
-    private void Patroling()
+    void Patroling()
     {
-        if (m_PlayerNear)
+        if (!mgPlayerNear)
         {
-            if (m_TimeToRotate <= 0)
+            if (!navMeshAgent.hasPath)
             {
-                Move(speedWalk);
-                LookingPlayer(playerLastPosition);
+                navMeshAgent.SetDestination(waypoints[mgCurrentWaypointIndex].position);
             }
-            else
-            {
-                Stop();
-                m_TimeToRotate -= Time.deltaTime;
-            }
-        }
-        else
-        {
-            m_PlayerNear = false;
-            playerLastPosition = Vector3.zero;
-            navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+
             if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
-                if (m_WaitTime <= 0)
+                if (mgWaitTime <= 0)
                 {
                     NextPoint();
                     Move(speedWalk);
-                    m_WaitTime = startWaitTime;
+                    mgWaitTime = startWaitTime;
                 }
                 else
                 {
-                    Stop();
-                    m_WaitTime -= Time.deltaTime;
+                    mgWaitTime -= Time.deltaTime;
                 }
             }
         }
     }
 
-
-
-    private void Attack()
+    void Attack()
     {
+        if (!mgPlayerInRange || Vector3.Distance(transform.position, mgPlayerPosition) > attackRadius)
+        {
+            return;
+        }
+
+        Vector3 directionToPlayer = (mgPlayerPosition - transform.position).normalized;
+        directionToPlayer.y = 0;
+
+        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+
         if (bulletPrefab != null && firePoint != null)
         {
-            Vector3 spawnPosition = transform.position + Vector3.up * 2f; 
+            Vector3 spawnPosition = transform.position + Vector3.up * 2f;
             GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
             Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
+            animator.SetBool("isAttacking", true);
 
             if (bulletRigidbody != null)
             {
-                Vector3 direction = (m_PlayerPosition - spawnPosition).normalized;
+                Vector3 direction = (mgPlayerPosition - spawnPosition).normalized;
                 bulletRigidbody.velocity = direction * bulletSpeed;
             }
             else
@@ -219,7 +233,6 @@ public class AIMagController : MonoBehaviour
             Debug.LogError("Bullet prefab or fire point is not assigned in the Inspector.");
         }
     }
-
 
     void Move(float speed)
     {
@@ -235,13 +248,8 @@ public class AIMagController : MonoBehaviour
 
     public void NextPoint()
     {
-        m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
-        navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
-    }
-
-    void CaughtPlayer()
-    {
-        m_CaughtPlayer = true;
+        mgCurrentWaypointIndex = (mgCurrentWaypointIndex + 1) % waypoints.Length;
+        navMeshAgent.SetDestination(waypoints[mgCurrentWaypointIndex].position);
     }
 
     void LookingPlayer(Vector3 player)
@@ -249,18 +257,18 @@ public class AIMagController : MonoBehaviour
         navMeshAgent.SetDestination(player);
         if (Vector3.Distance(transform.position, player) <= 0.3)
         {
-            if (m_WaitTime <= 0)
+            if (mgWaitTime <= 0)
             {
-                m_PlayerNear = false;
+                mgPlayerNear = false;
                 Move(speedWalk);
-                navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
-                m_WaitTime = startWaitTime;
-                m_TimeToRotate = timeToRotate;
+                navMeshAgent.SetDestination(waypoints[mgCurrentWaypointIndex].position);
+                mgWaitTime = startWaitTime;
+                mgTimeToRotate = timeToRotate;
             }
             else
             {
                 Stop();
-                m_WaitTime -= Time.deltaTime;
+                mgWaitTime -= Time.deltaTime;
             }
         }
     }
@@ -269,32 +277,41 @@ public class AIMagController : MonoBehaviour
     {
         Collider[] playerInRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);
 
+        bool playerDetected = false;
+
         for (int i = 0; i < playerInRange.Length; i++)
         {
             Transform player = playerInRange[i].transform;
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
+
             if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
             {
                 float dstToPlayer = Vector3.Distance(transform.position, player.position);
                 if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask))
                 {
-                    m_PlayerInRange = true;
-                    m_IsPatrol = false;
+                    mgPlayerInRange = true;
+                    mgPlayerPosition = player.transform.position;
+                    playerDetected = true;
                 }
                 else
                 {
-                    m_PlayerInRange = false;
-                }
-                if (Vector3.Distance(transform.position, player.position) > viewRadius)
-                {
-                    m_PlayerInRange = false;
+                    mgPlayerInRange = false;
                 }
             }
-            if (m_PlayerInRange)
-            {
-                m_PlayerPosition = player.transform.position;
-            }
+        }
+
+        if (!playerDetected)
+        {
+            mgPlayerInRange = false;
+        }
+    }
+
+    void DisableExistingBullets()
+    {
+        GameObject[] existingBullets = GameObject.FindGameObjectsWithTag("Bullet");
+        foreach (GameObject bullet in existingBullets)
+        {
+            bullet.SetActive(false);
         }
     }
 }
-

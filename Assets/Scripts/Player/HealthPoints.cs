@@ -15,7 +15,6 @@ namespace Player
         private bool isDeath;
         private bool isInvincible;
 
-
         public event UnityAction OnHeal;
         public event UnityAction OnHit;
         public event UnityAction OnDie;
@@ -28,14 +27,6 @@ namespace Player
         private void Start()
         {
             health = maxHealth;
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                Hit(20);
-            }
         }
 
         public void Heal(int heal)

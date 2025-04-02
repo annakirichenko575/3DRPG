@@ -49,7 +49,7 @@ namespace Enemy
             health -= damage;
             HealthClamp();
             
-            if (health == 0)
+            if (health <= 0)
             {
                 isDeath = true;
                 OnDie?.Invoke();
@@ -66,7 +66,7 @@ namespace Enemy
 
         private void HealthClamp()
         {
-            health = Math.Clamp(health, 0, maxHealth);
+            health = Mathf.Clamp(health, 0, maxHealth);
         }
 
         private IEnumerator InvincibilityRoutine()

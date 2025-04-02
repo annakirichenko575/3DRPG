@@ -8,20 +8,23 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField] private GameObject wolfbossPrefab;
     [SerializeField] private Transform[] fairySpawnPoints;
     [SerializeField] private Transform[] wolfbossSpawnPoints;
-    [SerializeField] private int spawnCount = 2; 
+    [SerializeField] private int spawnCount = 2;
 
     private void Start()
     {
-        SpawnMonsters(fairyPrefab, fairySpawnPoints);
-        SpawnMonsters(wolfbossPrefab, wolfbossSpawnPoints);
+        SpawnMonsters(fairyPrefab, new List<Transform>(fairySpawnPoints));
+        SpawnMonsters(wolfbossPrefab, new List<Transform>(wolfbossSpawnPoints));
     }
 
-    private void SpawnMonsters(GameObject monsterPrefab, Transform[] spawnPoints)
+    private void SpawnMonsters(GameObject monsterPrefab, List<Transform> availableSpawnPoints)
     {
-        for (int i = 0; i < spawnCount; i++)
+        for (int i = 0; i < spawnCount && availableSpawnPoints.Count > 0; i++)
         {
-            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            int randomIndex = Random.Range(0, availableSpawnPoints.Count);
+            Transform spawnPoint = availableSpawnPoints[randomIndex];
             Instantiate(monsterPrefab, spawnPoint.position, Quaternion.identity);
+
+            availableSpawnPoints.RemoveAt(randomIndex);
         }
     }
 }

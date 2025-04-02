@@ -9,6 +9,7 @@ TagManager:
   - heal
   - Enemy
   - FxTemporaire
+  - Bullet
   layers:
   - Default
   - TransparentFX

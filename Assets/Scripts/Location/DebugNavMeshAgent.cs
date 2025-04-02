@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class DebugNavMeshAgent : MonoBehaviour
 {
-    public bool velocity;
-    public bool desiredVelocity;
-    public bool path;
+    [SerializeField] private bool velocity;
+    [SerializeField] private bool desiredVelocity;
+    [SerializeField] private bool path;
 
     NavMeshAgent agent;
     void Start()
