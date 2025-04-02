@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
             {
                 playerHealth.Hit((int)damage); 
             }
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
     }
 }

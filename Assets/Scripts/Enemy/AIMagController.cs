@@ -38,7 +38,7 @@ public class AIMagController : MonoBehaviour
     [SerializeField] private float attackRadius = 8f;
     [SerializeField] private float bulletSpeed = 20f;
     private float nextFireTime = 2f;
-    [SerializeField] private float fireRate = 1.5f;
+    [SerializeField] private float fireRate = 0.5f;
 
     private float attackCooldown = 2f;
     private float lastAttackTime = 0f;
