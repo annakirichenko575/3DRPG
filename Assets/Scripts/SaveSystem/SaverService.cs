@@ -21,6 +21,7 @@ namespace SaveSystem
         {
             string saveJson = JsonUtility.ToJson(saveData);
             PlayerPrefs.SetString(Save, saveJson);
+            PlayerPrefs.Save(); // Явное сохранение для надежности
         }
 
         public void Load()
@@ -34,6 +35,25 @@ namespace SaveSystem
             else
             {
                 saveData = JsonUtility.FromJson<SaveData>(saveJson);
+            }
+
+            // Автоматическая телепортация игрока после загрузки
+            TeleportPlayerToSavedPosition();
+        }
+
+        private void TeleportPlayerToSavedPosition()
+        {
+            // Поиск игрока по тегу (более надежно, чем FindObjectOfType)
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (player != null)
+            {
+                player.transform.position = PlayerPosition;
+                Debug.Log($"Player teleported to saved position: {PlayerPosition}");
+            }
+            else
+            {
+                Debug.LogWarning("Player object not found in scene!");
             }
         }
     }
