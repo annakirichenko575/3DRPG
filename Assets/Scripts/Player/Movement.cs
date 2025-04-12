@@ -37,6 +37,11 @@ namespace Player
             ModelRotation();
         }
 
+        public void Initialize(Vector3 position)
+        {
+            transform.position = position;
+        }
+
         private void MovePosition()
         {
             Vector3 position = rigidbody.position + inputDirection * speed * Time.fixedDeltaTime;

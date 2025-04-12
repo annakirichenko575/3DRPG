@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Infrastructure;
+using Infrastructure.Services;
 using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,13 +12,10 @@ public class GameRestart : MonoBehaviour
     [SerializeField] GameObject _restartScreen;
     [SerializeField] GameObject _playerUI;
 
-    private Scene _currentScene;
-
     void Start()
     {
         _restartScreen.SetActive(false);
         _playerUI.SetActive(true);
-        _currentScene = SceneManager.GetActiveScene();
     }
 
     void Update()
@@ -30,7 +29,8 @@ public class GameRestart : MonoBehaviour
         }
     }
 
-    public void RestartGame(){
-        SceneManager.LoadScene(_currentScene.name);
+    public void RestartGame()
+    {
+        AllServices.Container.Single<SceneLoader>().Restart();
     }
 }

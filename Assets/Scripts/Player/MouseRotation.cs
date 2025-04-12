@@ -10,11 +10,6 @@ namespace Player
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private HealthPoints healthPoints;
 
-        private void Start()
-        {
-            Cursor.lockState = CursorLockMode.Locked; 
-        }
-
         private void Update()
         {
             if (healthPoints.IsDeath)

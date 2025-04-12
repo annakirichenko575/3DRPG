@@ -1,22 +1,27 @@
-using Player;
+using Infrastructure.Services;
+using SaveSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+namespace Player
 {
-    [SerializeField] private Image healthBar;
-    [SerializeField] private HealthPoints healthPoints;
-
-    private void Awake()
+    public class HealthBar : MonoBehaviour
     {
-        healthPoints.OnHit += HealthChanged;
-        healthPoints.OnHeal += HealthChanged;
-        healthPoints.OnDie += HealthChanged;
-    }
+        [SerializeField] private Image healthBar;
+        [SerializeField] private HealthPoints healthPoints;
 
-    private void HealthChanged()
-    {
-        healthBar.fillAmount = (float)healthPoints.Health / healthPoints.MaxHealth;
+        private PlayerRepository playerRepository;
 
+        public void Initialize(PlayerRepository playerRepository)
+        {
+            this.playerRepository = playerRepository;
+            HealthChanged();
+        }
+
+        public void HealthChanged()
+        {
+            healthBar.fillAmount = (float)playerRepository.Health / PlayerRepository.MaxHealth;
+
+        }
     }
 }

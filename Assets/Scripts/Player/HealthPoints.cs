@@ -3,17 +3,17 @@ using UnityEngine.Events;
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using SaveSystem;
 
 namespace Player
 {
     public class HealthPoints : MonoBehaviour
     {
-        [SerializeField] public static int maxHealth = 100;
         [SerializeField] private float hitInvincibilityTime = 2f;
 
-        private int health;
         private bool isDeath;
         private bool isInvincible;
+        private PlayerRepository playerRepository;
 
         public event UnityAction OnHeal;
         public event UnityAction OnHit;
@@ -21,12 +21,10 @@ namespace Player
 
         public bool IsDeath => isDeath;
         public bool IsInvincible => isInvincible;
-        public int Health => health;
-        public int MaxHealth =>maxHealth;
 
-        private void Start()
+        public void Initialize(PlayerRepository playerRepository)
         {
-            health = maxHealth;
+            this.playerRepository = playerRepository;
         }
 
         public void Heal(int heal)
@@ -34,7 +32,7 @@ namespace Player
             if (isDeath)
                 return;
 
-            health += heal;
+            playerRepository.SetPlayerHealth(playerRepository.Health + heal);
             HealthClamp();
             OnHeal.Invoke();
         }
@@ -46,10 +44,11 @@ namespace Player
                 return;
             }
 
-            health -= damage;
+            playerRepository.SetPlayerHealth(playerRepository.Health - damage);
+
             HealthClamp();
 
-            if (health == 0)
+            if (playerRepository.Health == 0)
             {
                 isDeath = true;
                 OnDie?.Invoke();
@@ -64,7 +63,7 @@ namespace Player
 
         private void HealthClamp()
         {
-            health = Math.Clamp(health, 0, maxHealth);
+            playerRepository.SetPlayerHealth(Math.Clamp(playerRepository.Health, 0, PlayerRepository.MaxHealth));
         }
 
         private IEnumerator InvincibilityRoutine()
