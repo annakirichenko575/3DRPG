@@ -1,3 +1,5 @@
+using Infrastructure.Services;
+using SaveSystem;
 using UnityEngine;
 
 namespace Player
@@ -12,6 +14,7 @@ namespace Player
         private Vector2 mouseInput = Vector2.zero;
         private bool magicOnCooldown;
         private bool isMagickAttack;
+        private PlayerRepository playerRepository;
 
         public Vector2 MouseInput => mouseInput;
         public Vector3 MoveInput => moveInput;
@@ -21,6 +24,8 @@ namespace Player
 
         private void Start()
         {
+            playerRepository = AllServices.Container.Single<PlayerRepository>();
+
             magicOnCooldown = false;
             _currentMagicCooldown = 0f;
             _maxMagicCooldown = 2f;
@@ -74,7 +79,7 @@ namespace Player
         private bool CheckMagicAttack()
         {
             isMagickAttack = false;
-            if (magicOnCooldown == false && ManaSpend.mana >0)
+            if (magicOnCooldown == false && playerRepository.Mana >0)
                 isMagickAttack = Input.GetMouseButtonDown(1);
             
             return isMagickAttack;

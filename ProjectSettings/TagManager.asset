@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - FxTemporaire
   - Bullet
+  - ManaPotion
   layers:
   - Default
   - TransparentFX

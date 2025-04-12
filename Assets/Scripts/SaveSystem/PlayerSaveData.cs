@@ -8,6 +8,6 @@ namespace SaveSystem
     {
         public Vector3 Position;
         public int Health;
-        public int Mana;
+        public float Mana;
     }
 }

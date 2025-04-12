@@ -15,10 +15,9 @@ GameObject:
   - component: {fileID: 4129376699744535332}
   - component: {fileID: 3737567143415928456}
   - component: {fileID: 6997093887912292689}
-  - component: {fileID: 2696409426332625069}
+  - component: {fileID: 5629198296082159731}
   - component: {fileID: 3902308967601785789}
   - component: {fileID: 5596184079206776467}
-  - component: {fileID: 4388984509904908725}
   - component: {fileID: 8093281160219757883}
   m_Layer: 6
   m_Name: Player
@@ -171,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitInvincibilityTime: 2
---- !u!114 &2696409426332625069
+--- !u!114 &5629198296082159731
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,12 +179,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 949770686022085726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 397b331f99162604999bc5f55796f7ca, type: 3}
+  m_Script: {fileID: 11500000, guid: aafd32f4d06989e4bb7d085f680e72c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 3737567143415928456}
-  manaBar: {fileID: 1480846620102477465}
-  _cooldownIcon: {fileID: 7752470267432512672}
 --- !u!114 &3902308967601785789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,21 +216,6 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 256
---- !u!114 &4388984509904908725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 949770686022085726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53ad0c2e2182d74ca685bcd20e62f5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _healthPoints: {fileID: 6997093887912292689}
-  _restartScreen: {fileID: 0}
-  _playerUI: {fileID: 5064568794250823025}
 --- !u!114 &8093281160219757883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8759662824046058291
 RectTransform:
   m_ObjectHideFlags: 0
@@ -565,6 +547,7 @@ GameObject:
   - component: {fileID: 7910410272086601417}
   - component: {fileID: 6153966004113050871}
   - component: {fileID: 1480846620102477465}
+  - component: {fileID: 6878611128083823779}
   m_Layer: 0
   m_Name: Mana
   m_TagString: Untagged
@@ -629,6 +612,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6878611128083823779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4869561499656006910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdbce6261e766f44fab47884c8ad8ef6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manaBar: {fileID: 1480846620102477465}
+  manaPoints: {fileID: 5629198296082159731}
 --- !u!1 &5064568794250823025
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,7 +687,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

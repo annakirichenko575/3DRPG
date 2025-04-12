@@ -2,6 +2,7 @@
 using Player;
 using SaveSystem;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Infrastructure
 {
@@ -12,6 +13,8 @@ namespace Infrastructure
         private HealthPoints healthPoints;
         private PlayerRepository playerRepository;
         private SceneLoader sceneLoader;
+        private ManaBar manaBar;
+        private ManaPoints manaPoints;
 
         public Movement Movement => movement;
 
@@ -26,12 +29,16 @@ namespace Infrastructure
             healthPoints.OnHit += healthBar.HealthChanged;
             healthPoints.OnHeal += healthBar.HealthChanged;
             healthPoints.OnDie += healthBar.HealthChanged;
+
         }
 
         private void UIInitialize(PlayerRepository playerRepository)
         {
             healthBar = GameObject.FindObjectOfType<Player.HealthBar>();
             healthBar.Initialize(playerRepository);
+
+            manaBar = GameObject.FindObjectOfType<Player.ManaBar>();
+            manaBar.Initialize(playerRepository);
         }
 
         private void PlayerInitialize()
@@ -48,6 +55,9 @@ namespace Infrastructure
 
             healthPoints = player.GetComponent<HealthPoints>();
             healthPoints.Initialize(playerRepository);
+
+            manaPoints = player.GetComponent<ManaPoints>();
+            manaPoints.Initialize(playerRepository);
         }
     }
 }

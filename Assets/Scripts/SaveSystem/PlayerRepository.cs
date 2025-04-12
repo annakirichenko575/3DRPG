@@ -8,6 +8,7 @@ namespace SaveSystem
     public class PlayerRepository : IService
     {
         public const int MaxHealth = 100;
+        public const float MaxMana = 100f;
 
         private const string Save = "PlayerSave";
 
@@ -15,7 +16,9 @@ namespace SaveSystem
 
         public Vector3 Position => saveData.Position;
         public int Health => saveData.Health;
-        public int Mana => saveData.Mana;
+        public float Mana => saveData.Mana;
+
+        public event Action OnManaChanged;
 
         public PlayerRepository()
         {
@@ -33,9 +36,11 @@ namespace SaveSystem
             saveData.Health = value;
         }
 
-        public void SetPlayerMana(int value)
+        public void SetPlayerMana(float value)
         {
-            saveData.Mana = value;
+            saveData.Mana = Mathf.Clamp(value, 0, MaxMana);
+            OnManaChanged?.Invoke(); 
+            SaveData();
         }
 
         public void SaveData()
@@ -62,6 +67,7 @@ namespace SaveSystem
         public void ResetData()
         {
             saveData.Health = MaxHealth;
+            saveData.Mana = MaxMana;
         }
     }
 }

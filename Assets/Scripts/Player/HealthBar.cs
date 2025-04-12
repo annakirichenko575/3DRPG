@@ -21,7 +21,6 @@ namespace Player
         public void HealthChanged()
         {
             healthBar.fillAmount = (float)playerRepository.Health / PlayerRepository.MaxHealth;
-
         }
     }
 }
