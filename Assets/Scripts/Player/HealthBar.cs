@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Player
 {
-    public class HealthBar : MonoBehaviour
+    public class HealthBar : MonoBehaviour //View
     {
         [SerializeField] private Image healthBar;
         [SerializeField] private HealthPoints healthPoints;

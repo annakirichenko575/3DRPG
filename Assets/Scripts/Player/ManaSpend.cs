@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
-using Player;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Player {
-    public class ManaSpend : MonoBehaviour {
+namespace Player 
+{
+    public class ManaSpend : MonoBehaviour 
+    {
         private const float coast = 10f;
         private const float restoreCount = 40f;
 

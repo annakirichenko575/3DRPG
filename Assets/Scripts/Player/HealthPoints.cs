@@ -7,7 +7,7 @@ using SaveSystem;
 
 namespace Player
 {
-    public class HealthPoints : MonoBehaviour
+    public class HealthPoints : MonoBehaviour //Model
     {
         [SerializeField] private float hitInvincibilityTime = 2f;
 

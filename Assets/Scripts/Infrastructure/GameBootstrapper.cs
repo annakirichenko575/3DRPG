@@ -23,7 +23,7 @@ namespace Infrastructure
             AllServices.Container.RegisterSingle<PlayerFactory>(playerFactory);
 
 
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
         }
 
         private void Update()

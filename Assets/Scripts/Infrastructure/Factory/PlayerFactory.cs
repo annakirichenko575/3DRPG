@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Infrastructure
 {
-    public class PlayerFactory : IService
+    public class PlayerFactory : IService //Controller
     {
         private HealthBar healthBar;
         private Movement movement;
