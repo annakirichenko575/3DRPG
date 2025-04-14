@@ -12,13 +12,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: manaAura Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 2465507382249373877, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
+      propertyPath: m_TagString
+      value: mana
+      objectReference: {fileID: 0}
+    - target: {fileID: 3299419101036653032, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836426874342888196, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.59341
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836426874342888196, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.59341
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836426874342888196, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.59341
+      objectReference: {fileID: 0}
     - target: {fileID: 4836426874342888196, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.595
+      value: 1.929
       objectReference: {fileID: 0}
     - target: {fileID: 4836426874342888196, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.671
+      value: 0.943
       objectReference: {fileID: 0}
     - target: {fileID: 4836426874342888196, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
       propertyPath: m_LocalPosition.z
@@ -59,6 +79,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2465507382249373877, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
       insertIndex: -1
       addedObject: {fileID: 741994338543302175}
+    - targetCorrespondingSourceObject: {fileID: 2465507382249373877, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1540056895790874476}
   m_SourcePrefab: {fileID: 100100000, guid: e5a8f5a1973bec245aa8823483592c76, type: 3}
 --- !u!1 &333855116003539027 stripped
 GameObject:
@@ -77,3 +100,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2daed36b9c99243be6801ccc954bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1540056895790874476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333855116003539027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea365d9d485295644a8cb236c4d23ece, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manaPrefab: {fileID: 333855116003539027}
+  spawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

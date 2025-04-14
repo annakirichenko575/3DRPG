@@ -18,8 +18,6 @@ namespace SaveSystem
         public int Health => saveData.Health;
         public float Mana => saveData.Mana;
 
-        public event Action OnManaChanged;
-
         public PlayerRepository()
         {
             saveData = new PlayerSaveData();
@@ -39,7 +37,6 @@ namespace SaveSystem
         public void SetPlayerMana(float value)
         {
             saveData.Mana = Mathf.Clamp(value, 0, MaxMana);
-            OnManaChanged?.Invoke(); 
             SaveData();
         }
 

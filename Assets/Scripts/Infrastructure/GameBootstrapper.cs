@@ -9,35 +9,35 @@ namespace Infrastructure
 
         private void Awake()
         {
-            SceneLoader sceneLoader = new SceneLoader();
-            AllServices.Container.RegisterSingle<SceneLoader>(sceneLoader);
+            Registrate();
+            LevelInitialize();
+        }
 
-            PlayerRepository playerRepository = new PlayerRepository();
-            AllServices.Container.RegisterSingle<PlayerRepository>(playerRepository);
-            if (sceneLoader.IsFirstStart == false)
+        private static void LevelInitialize()
+        {
+            bool isFirstStart = AllServices.Container.Single<SceneLoader>().IsFirstStart;
+            if (isFirstStart == false)
             {
-                playerRepository.LoadData();
+                AllServices.Container.Single<PlayerRepository>().LoadData();
             }
 
-            PlayerFactory playerFactory = new PlayerFactory(playerRepository, sceneLoader);
+            AllServices.Container.Single<PlayerFactory>().Initialize(isFirstStart);
+        }
+
+        private void Registrate()
+        {
+            PlayerRepository playerRepository = new PlayerRepository();
+            AllServices.Container.RegisterSingle<PlayerRepository>(playerRepository);
+
+            PlayerFactory playerFactory = new PlayerFactory(playerRepository);
             AllServices.Container.RegisterSingle<PlayerFactory>(playerFactory);
 
-
-            //DontDestroyOnLoad(this);
+            SceneLoader sceneLoader = new SceneLoader(playerFactory);
+            AllServices.Container.RegisterSingle<SceneLoader>(sceneLoader);
         }
 
         private void Update()
         {
-            /*if (Input.GetKeyDown(KeyCode.C))
-            {
-                saverService.SetPlayerPosition(FindObjectOfType<Player.Movement>().transform.position);
-                saverService.SaveData();
-            }
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                saverService.LoadData();
-                FindObjectOfType<Player.Movement>().transform.position = saverService.Position;
-            }*/
             if (Input.GetKeyDown(KeyCode.X))
             {
                 PlayerPrefs.DeleteAll();

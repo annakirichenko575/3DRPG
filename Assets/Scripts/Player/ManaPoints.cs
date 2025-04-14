@@ -1,13 +1,18 @@
 using UnityEngine;
 using System;
 using SaveSystem;
+using UnityEngine.Events;
 
 namespace Player
 {
     public class ManaPoints : MonoBehaviour
     {
         [SerializeField] private PlayerInput playerInput;
+
         private PlayerRepository playerRepository;
+
+        public event UnityAction OnWiz;
+        public event UnityAction OnRecovered;
 
         public void Initialize(PlayerRepository playerRepository)
         {
@@ -18,22 +23,29 @@ namespace Player
         {
             if (playerInput.IsMagicAttack && playerRepository.Mana > 0)
             {
-                playerRepository.SetPlayerMana(playerRepository.Mana - 10f);
+                Wiz(10f);
+                OnWiz?.Invoke();
             }
+        }
+
+        private void Wiz(float value)
+        {
+            playerRepository.SetPlayerMana(playerRepository.Mana - value);
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("mana"))
             {
-                playerRepository.SetPlayerMana(playerRepository.Mana + 40f);
+                Recover(40f);
                 Destroy(other.gameObject);
             }
         }
 
-        private void ManaClamp()
+        private void Recover(float value)
         {
-            playerRepository.SetPlayerMana(Math.Clamp(playerRepository.Mana, 0, PlayerRepository.MaxMana));
+            playerRepository.SetPlayerMana(playerRepository.Mana + value);
+            OnRecovered?.Invoke();
         }
     }
 }

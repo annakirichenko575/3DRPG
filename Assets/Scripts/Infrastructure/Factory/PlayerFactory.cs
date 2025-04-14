@@ -18,18 +18,32 @@ namespace Infrastructure
 
         public Movement Movement => movement;
 
-        public PlayerFactory(PlayerRepository playerRepository, SceneLoader sceneLoader)
+        public PlayerFactory(PlayerRepository playerRepository)
         {
             this.playerRepository = playerRepository;
-            this.sceneLoader = sceneLoader;
+        }
 
-            PlayerInitialize();
+        public void Initialize(bool isFirstStart)
+        {
+            PlayerInitialize(isFirstStart);
             UIInitialize(playerRepository);
 
             healthPoints.OnHit += healthBar.HealthChanged;
             healthPoints.OnHeal += healthBar.HealthChanged;
             healthPoints.OnDie += healthBar.HealthChanged;
 
+            manaPoints.OnWiz += manaBar.UpdateMana;
+            manaPoints.OnRecovered += manaBar.UpdateMana;
+        }
+
+        public void CleanUp()
+        {
+            healthPoints.OnHit -= healthBar.HealthChanged;
+            healthPoints.OnHeal -= healthBar.HealthChanged;
+            healthPoints.OnDie -= healthBar.HealthChanged;
+
+            manaPoints.OnWiz -= manaBar.UpdateMana;
+            manaPoints.OnRecovered -= manaBar.UpdateMana;
         }
 
         private void UIInitialize(PlayerRepository playerRepository)
@@ -41,13 +55,13 @@ namespace Infrastructure
             manaBar.Initialize(playerRepository);
         }
 
-        private void PlayerInitialize()
+        private void PlayerInitialize(bool isFirstStart)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
 
             movement = player.GetComponent<Movement>();
 
-            if (sceneLoader.IsFirstStart)
+            if (isFirstStart)
             {
                 playerRepository.SetPlayerPosition(movement.transform.position);
             }

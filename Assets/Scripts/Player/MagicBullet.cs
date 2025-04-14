@@ -26,7 +26,6 @@ namespace Player
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.gameObject.name);
             Enemy.HealthPoints healthPoints = GetEnemyHealthPoints(other);
 
             if (healthPoints != null)
