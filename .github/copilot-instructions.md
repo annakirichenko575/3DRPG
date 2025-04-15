@@ -2,12 +2,13 @@
 - Project name: 3DRPG
 - Unity version: Unity 2022.3.53f1
 - Active scene:
+  - Name: DemoCharacter
   - Tags:
-    - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, damage, mana, heal, Enemy, FxTemporaire
+    - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, damage, mana, heal, Enemy, FxTemporaire, Bullet, ManaPotion
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI, Player, Obstacles, Enemy
 - Active game object:
-  - Name: Potion
+  - Name: Music
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
