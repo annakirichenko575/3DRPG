@@ -477,6 +477,7 @@ GameObject:
   - component: {fileID: 249317754}
   - component: {fileID: 249317753}
   - component: {fileID: 249317752}
+  - component: {fileID: 249317755}
   m_Layer: 0
   m_Name: 'settings button '
   m_TagString: Untagged
@@ -544,11 +545,11 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 249317753}
+  m_TargetGraphic: {fileID: 1066366027}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1357897224}
+      - m_Target: {fileID: 249317755}
         m_TargetAssemblyTypeName: SettingsButton, Assembly-CSharp
         m_MethodName: ChangeUI
         m_Mode: 1
@@ -598,6 +599,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 249317750}
   m_CullTransparentMesh: 1
+--- !u!114 &249317755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249317750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f2b3054bd890343bf788dec31ddd2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startBtn: {fileID: 861403107}
+  _settingsBtn: {fileID: 249317750}
+  _musicText: {fileID: 901941534}
+  _musicSlider: {fileID: 1711469218}
+  _backButton: {fileID: 2002228891}
 --- !u!1 &694754457
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,6 +721,7 @@ GameObject:
   - component: {fileID: 861403111}
   - component: {fileID: 861403110}
   - component: {fileID: 861403109}
+  - component: {fileID: 861403112}
   m_Layer: 0
   m_Name: start button
   m_TagString: Untagged
@@ -770,11 +789,11 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 861403110}
+  m_TargetGraphic: {fileID: 59684803}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1357897223}
+      - m_Target: {fileID: 861403112}
         m_TargetAssemblyTypeName: StartButton, Assembly-CSharp
         m_MethodName: GameStart
         m_Mode: 1
@@ -824,6 +843,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 861403107}
   m_CullTransparentMesh: 1
+--- !u!114 &861403112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861403107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8605ad0e5f5aa564aa4fb4504e101a90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &901941534
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,10 +1277,7 @@ GameObject:
   - component: {fileID: 1357897219}
   - component: {fileID: 1357897222}
   - component: {fileID: 1357897221}
-  - component: {fileID: 1357897225}
-  - component: {fileID: 1357897224}
   - component: {fileID: 1357897220}
-  - component: {fileID: 1357897223}
   - component: {fileID: 1357897226}
   m_Layer: 0
   m_Name: menu canvas
@@ -1345,52 +1373,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1357897223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1357897218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8605ad0e5f5aa564aa4fb4504e101a90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1357897224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1357897218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7f2b3054bd890343bf788dec31ddd2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startBtn: {fileID: 861403107}
-  _settingsBtn: {fileID: 249317750}
-  _musicText: {fileID: 901941534}
-  _musicSlider: {fileID: 1711469218}
-  _backButton: {fileID: 2002228891}
---- !u!114 &1357897225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1357897218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44ba84e7e9259f045ab6c66f74a5ff37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startBtn: {fileID: 861403107}
-  _settingsBtn: {fileID: 249317750}
-  _musicText: {fileID: 901941534}
-  _musicSlider: {fileID: 1711469218}
-  _backButton: {fileID: 2002228891}
 --- !u!114 &1357897226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1852,6 +1834,7 @@ GameObject:
   - component: {fileID: 2002228895}
   - component: {fileID: 2002228894}
   - component: {fileID: 2002228893}
+  - component: {fileID: 2002228896}
   m_Layer: 0
   m_Name: back button
   m_TagString: Untagged
@@ -1919,11 +1902,11 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2002228894}
+  m_TargetGraphic: {fileID: 88333634}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1357897225}
+      - m_Target: {fileID: 2002228896}
         m_TargetAssemblyTypeName: BackButton, Assembly-CSharp
         m_MethodName: ChangeUI
         m_Mode: 1
@@ -1973,6 +1956,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2002228891}
   m_CullTransparentMesh: 1
+--- !u!114 &2002228896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002228891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ba84e7e9259f045ab6c66f74a5ff37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startBtn: {fileID: 861403107}
+  _settingsBtn: {fileID: 249317750}
+  _musicText: {fileID: 901941534}
+  _musicSlider: {fileID: 1711469218}
+  _backButton: {fileID: 2002228891}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
