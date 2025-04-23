@@ -35,14 +35,6 @@ namespace Enemy.StateMachine
         private void Update()
         {
             currentState?.Update();
-            UpdateAnimations();
-
-        }
-
-        void UpdateAnimations()
-        {
-           // 
-            //animator.SetBool("isChasing", !isPatrol && navMeshAgent.velocity.magnitude > 0.1f);
         }
 
         public void ChangeState(IEnemyState newState)
@@ -65,7 +57,10 @@ namespace Enemy.StateMachine
             navMeshAgent.speed = 0;
         }
 
-        public bool PlayerInSight(out Transform player)
+        public bool PlayerInSight(out Transform player) =>
+            PlayerInRange(out player) && ObstacleCheck(player.position) == false;
+
+        public bool PlayerInRange(out Transform player)
         {
             
             Collider[] playerInRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);
@@ -100,79 +95,72 @@ namespace Enemy.StateMachine
             waypoints.Length;
     }
 
-    public class PatrolState : IEnemyState
+    public class ChasingState : IEnemyState
     {
-        private const string PatrolStateName = "isPatroling";
-
         private EnemyStateMachine enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
-        private int currentWaypointIndex;
+        private Transform player;
+        private Transform transform;
         private float waitTime;
-
+        
+        private float speedRun = 5;
+        
+        //private float timeToRotate = 1;
         private float startWaitTime = 4;
-        private float speedWalk = 4;
 
-        public PatrolState(EnemyStateMachine enemy, Animator animator, NavMeshAgent navMeshAgent)
+        public ChasingState(EnemyStateMachine enemyBrain, 
+            Animator animator, NavMeshAgent navMeshAgent, Transform player)
         {
-            this.enemyBrain = enemy;
+            this.enemyBrain = enemyBrain;
+            transform = enemyBrain.transform;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
+            this.player = player;
         }
 
         public void Enter()
         {
-            //animator.SetBool("isPatroling", isPatrol && navMeshAgent.velocity.magnitude > 0.1f);
-            animator.SetBool(PatrolStateName, true);
             waitTime = startWaitTime;
-            currentWaypointIndex = 0;
-            enemyBrain.Move(speedWalk);
-
+            enemyBrain.Move(speedRun);
+            
+            animator.SetBool("isChasing", true);
         }
 
         public void Update()
         {
-            //TODO:
-            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance && !navMeshAgent.pathPending)
+            animator.SetBool("isChasing", navMeshAgent.velocity.magnitude > 0.1f);
+            if (enemyBrain.PlayerInSight(out Transform player))
             {
-                NextPoint(); 
+                navMeshAgent.SetDestination(player.position);
             }
-            Patroling();
-        }
-
-        public void Exit()
-        {
-            animator.SetBool(PatrolStateName, false);
-        }
-
-        private void Patroling()
-        {
-
-            if (!navMeshAgent.hasPath)
-            {
-                navMeshAgent.SetDestination(enemyBrain.GetWaypointPositionByIndex(currentWaypointIndex));
-            }
-
+            
             if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
-                if (waitTime <= 0)
+                enemyBrain.Stop();
+                //if (Vector3.Distance(transform.position, player.position) >= 2.5f)
+                if (enemyBrain.PlayerInAttackDistance(this.player.position)) 
                 {
-                    NextPoint();
-                    enemyBrain.Move(speedWalk);
-                    waitTime = startWaitTime;
+                    Debug.Log("Attack");
+                    animator.SetBool("isAttacking", true);
                 }
                 else
                 {
                     waitTime -= Time.deltaTime;
+                    if (waitTime <= 0)
+                    {
+                        enemyBrain.ChangeState(new PatrolState(enemyBrain, animator, navMeshAgent));
+                        Debug.Log("Patrol");
+                    }
+                    Debug.Log("wait");
+                    animator.SetBool("isAttacking", false);
                 }
             }
-
         }
 
-        private void NextPoint()
+        public void Exit()
         {
-            currentWaypointIndex = (currentWaypointIndex + 1) % enemyBrain.WaipointsCount();
-            navMeshAgent.SetDestination(enemyBrain.GetWaypointPositionByIndex(currentWaypointIndex));
+            animator.SetBool("isChasing", false);
         }
     }
 }

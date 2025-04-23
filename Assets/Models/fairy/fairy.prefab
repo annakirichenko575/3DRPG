@@ -862,6 +862,30 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: -2525213446790289079, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.65501535
+      objectReference: {fileID: 0}
+    - target: {fileID: -2525213446790289079, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.65501535
+      objectReference: {fileID: 0}
+    - target: {fileID: -2525213446790289079, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.2663737
+      objectReference: {fileID: 0}
+    - target: {fileID: -2525213446790289079, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.2663737
+      objectReference: {fileID: 0}
+    - target: {fileID: -2525213446790289079, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -2525213446790289079, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 44.26
+      objectReference: {fileID: 0}
     - target: {fileID: -2223453886256920739, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -993,6 +1017,10 @@ PrefabInstance:
     - target: {fileID: 4364688731326708430, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436805663696350335, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4436805663696350335, guid: 6beba6bac3f7ccd42a663400130de20e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1213,7 +1241,7 @@ NavMeshAgent:
   m_Acceleration: 40
   avoidancePriority: 50
   m_AngularSpeed: 720
-  m_StoppingDistance: 5
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1234,7 +1262,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 4dbc3b3fca0bd6e468f9ff67c1249a59, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -1274,8 +1302,8 @@ MonoBehaviour:
   timeToRotate: 1
   speedWalk: 6
   speedRun: 9
-  viewRadius: 30
-  viewAngle: 180
+  viewRadius: 15
+  viewAngle: 120
   playerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -1291,7 +1319,7 @@ MonoBehaviour:
   firePoint: {fileID: 497769562074255389}
   attackRadius: 10
   bulletSpeed: 20
-  fireRate: 1
+  fireRate: 0.5
 --- !u!114 &6686581632408999320
 MonoBehaviour:
   m_ObjectHideFlags: 0
