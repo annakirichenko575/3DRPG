@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 3902308967601785789}
   - component: {fileID: 5596184079206776467}
   - component: {fileID: 8093281160219757883}
+  - component: {fileID: 6764757677684477114}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -231,6 +232,19 @@ MonoBehaviour:
   _healthPoints: {fileID: 6997093887912292689}
   _restartScreen: {fileID: 0}
   _playerUI: {fileID: 5064568794250823025}
+--- !u!114 &6764757677684477114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949770686022085726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 236c14d6e3ab84344a7080c84b23479d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pauseCanvas: {fileID: 0}
 --- !u!1 &2919557700171044149
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,7 +639,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manaBar: {fileID: 1480846620102477465}
-  manaPoints: {fileID: 5629198296082159731}
 --- !u!1 &5064568794250823025
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,7 +1089,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 2913968418917531866}
-  healthPoints: {fileID: 6997093887912292689}
 --- !u!1001 &946317386973647200
 PrefabInstance:
   m_ObjectHideFlags: 0

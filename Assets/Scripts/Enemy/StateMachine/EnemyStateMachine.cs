@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+using Player;
 
 namespace Enemy.StateMachine
 {
@@ -62,7 +64,7 @@ namespace Enemy.StateMachine
 
         public bool PlayerInRange(out Transform player)
         {
-            
+
             Collider[] playerInRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);
 
             for (int i = 0; i < playerInRange.Length; i++)
@@ -70,7 +72,7 @@ namespace Enemy.StateMachine
                 player = playerInRange[i].transform;
                 Vector3 dirToPlayer = (player.position - transform.position).normalized;
                 if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
-                { 
+                {
                     return true;
                 }
             }
@@ -103,13 +105,13 @@ namespace Enemy.StateMachine
         private Transform player;
         private Transform transform;
         private float waitTime;
-        
+
         private float speedRun = 5;
-        
+
         //private float timeToRotate = 1;
         private float startWaitTime = 4;
 
-        public ChasingState(EnemyStateMachine enemyBrain, 
+        public ChasingState(EnemyStateMachine enemyBrain,
             Animator animator, NavMeshAgent navMeshAgent, Transform player)
         {
             this.enemyBrain = enemyBrain;
@@ -123,7 +125,7 @@ namespace Enemy.StateMachine
         {
             waitTime = startWaitTime;
             enemyBrain.Move(speedRun);
-            
+
             animator.SetBool("isChasing", true);
         }
 
@@ -134,26 +136,19 @@ namespace Enemy.StateMachine
             {
                 navMeshAgent.SetDestination(player.position);
             }
-            
-            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+
+            if (enemyBrain.PlayerInAttackDistance(this.player.position))
             {
-                enemyBrain.Stop();
+                enemyBrain.ChangeState(new AttackState(enemyBrain, animator, navMeshAgent, player));
+            }
+
+            else if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+            {
                 //if (Vector3.Distance(transform.position, player.position) >= 2.5f)
-                if (enemyBrain.PlayerInAttackDistance(this.player.position)) 
+                waitTime -= Time.deltaTime;
+                if (waitTime <= 0)
                 {
-                    Debug.Log("Attack");
-                    animator.SetBool("isAttacking", true);
-                }
-                else
-                {
-                    waitTime -= Time.deltaTime;
-                    if (waitTime <= 0)
-                    {
-                        enemyBrain.ChangeState(new PatrolState(enemyBrain, animator, navMeshAgent));
-                        Debug.Log("Patrol");
-                    }
-                    Debug.Log("wait");
-                    animator.SetBool("isAttacking", false);
+                    enemyBrain.ChangeState(new PatrolState(enemyBrain, animator, navMeshAgent));
                 }
             }
         }
@@ -161,6 +156,74 @@ namespace Enemy.StateMachine
         public void Exit()
         {
             animator.SetBool("isChasing", false);
+        }
+    }
+
+    public class AttackState : IEnemyState
+    {
+        private EnemyStateMachine enemyBrain;
+        private Animator animator;
+        private NavMeshAgent navMeshAgent;
+        private Transform player;
+
+        // Перенесенные поля из EnemyAttack
+        private int damage = 20;
+        private float attackInterval = 5f;
+        private string playerTag = "Player";
+        private Player.HealthPoints playerHealth;
+        private Coroutine attackCoroutine;
+
+        public AttackState(EnemyStateMachine enemyBrain, Animator animator,
+                         NavMeshAgent navMeshAgent, Transform player)
+        {
+            this.enemyBrain = enemyBrain;
+            this.animator = animator;
+            this.navMeshAgent = navMeshAgent;
+            this.player = player;
+        }
+
+        public void Enter()
+        {
+            enemyBrain.Stop();
+            animator.SetBool("isAttacking", true);
+
+            if (player.CompareTag(playerTag))
+            {
+                playerHealth = player.GetComponent<Player.HealthPoints>(); 
+                if (attackCoroutine == null && playerHealth != null)
+                {
+                    attackCoroutine = enemyBrain.StartCoroutine(PeriodicAttack());
+                }
+            }
+        }
+
+        public void Update()
+        {
+            if (!enemyBrain.PlayerInAttackDistance(player.position))
+            {
+                enemyBrain.ChangeState(new ChasingState(enemyBrain, animator, navMeshAgent, player));
+            }
+        }
+
+        public void Exit()
+        {
+            animator.SetBool("isAttacking", false);
+
+            if (attackCoroutine != null)
+            {
+                enemyBrain.StopCoroutine(attackCoroutine);
+                attackCoroutine = null;
+            }
+        }
+
+        private IEnumerator PeriodicAttack()
+        {
+            while (playerHealth != null && !playerHealth.IsDeath)
+            {
+                playerHealth.Hit(damage);
+                yield return new WaitForSeconds(attackInterval);
+            }
+            attackCoroutine = null;
         }
     }
 }
