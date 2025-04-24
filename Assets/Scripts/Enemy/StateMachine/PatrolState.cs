@@ -7,7 +7,7 @@ namespace Enemy.StateMachine
     {
         private const string PatrolStateName = "isPatroling";
 
-        private EnemyStateMachine enemyBrain;
+        private WolfStateMachine enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
         private int currentWaypointIndex;
@@ -16,7 +16,7 @@ namespace Enemy.StateMachine
         private float startWaitTime = 4;
         private float speedWalk = 4;
 
-        public PatrolState(EnemyStateMachine enemy, Animator animator, NavMeshAgent navMeshAgent)
+        public PatrolState(WolfStateMachine enemy, Animator animator, NavMeshAgent navMeshAgent)
         {
             this.enemyBrain = enemy;
             this.animator = animator;
@@ -39,7 +39,7 @@ namespace Enemy.StateMachine
                 //Attack();
                 //or
                 //Chasing();
-                enemyBrain.ChangeState(new ChasingState(enemyBrain, animator, navMeshAgent, player));
+                enemyBrain.ChangeState(WolfStates.Chase);
             }
             else
             {

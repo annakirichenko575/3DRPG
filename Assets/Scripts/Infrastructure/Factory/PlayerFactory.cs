@@ -17,6 +17,7 @@ namespace Infrastructure
         private ManaPoints manaPoints;
 
         public Movement Movement => movement;
+        public Transform Player  => movement.transform;
 
         public PlayerFactory(PlayerRepository playerRepository)
         {
