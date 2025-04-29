@@ -3066,6 +3066,42 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2472691418213439987, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
   m_PrefabInstance: {fileID: 7466464223181402257}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &99353223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99353214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fc2ddb81a20a0c48ac4e5d9f9e8ab1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewRadius: 15
+  viewAngle: 120
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 128
+  startWaitTime: 4
+  timeToRotate: 1
+  speedWalk: 6
+  speedRun: 9
+  bulletPrefab: {fileID: 9182240560578513568, guid: dfef446d8dc52fb459f67f6be5f9ecf6, type: 3}
+  firePoint: {fileID: 1181572198}
+  attackRadius: 10
+  bulletSpeed: 20
+  fireRate: 0.5
+  attackDistance: 2.5
+  waypoints:
+  - {fileID: 2090069185}
+  - {fileID: 1802968945}
+  - {fileID: 1690216593}
+  - {fileID: 485951949}
+  runawayPoint: {fileID: 913452964}
 --- !u!1001 &100644182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25501,7 +25537,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &902159958
 Transform:
   m_ObjectHideFlags: 0
@@ -32033,6 +32069,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 726684968}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1181572198 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 497769562074255389, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
+  m_PrefabInstance: {fileID: 7466464223181402257}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1182642331
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58045,6 +58086,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4583145831564041554, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583145831564041554, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
       propertyPath: waypoints.Array.data[0]
       value: 
       objectReference: {fileID: 485951949}
@@ -58067,7 +58112,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2472691418213439987, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 99353223}
   m_SourcePrefab: {fileID: 100100000, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
 --- !u!1001 &7830333839959431207
 PrefabInstance:

@@ -68,9 +68,7 @@ namespace Enemy.StateMachine
 
         private void SetNextPoint()
         {
-            if (navMeshAgent.hasPath)
-                currentWaypointIndex = (currentWaypointIndex + 1) % enemyBrain.WaypointsCount();
-
+            currentWaypointIndex = (currentWaypointIndex + 1) % enemyBrain.WaypointsCount();
             navMeshAgent.SetDestination(enemyBrain.GetWaypointPositionByIndex(currentWaypointIndex));
         }
     }
