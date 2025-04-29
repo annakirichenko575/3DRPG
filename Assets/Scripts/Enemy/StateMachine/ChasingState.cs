@@ -8,35 +8,35 @@ namespace Enemy.StateMachine
         private WolfStateMachine enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
-        private Transform player;
         private Transform transform;
+        private Transform player; // Теперь получаем позже!
+
         private float waitTime;
+        private float speedRun = 5f;
+        private float startWaitTime = 4f;
 
-        private float speedRun = 5;
-
-        //private float timeToRotate = 1;
-        private float startWaitTime = 4;
-
-        public ChasingState(WolfStateMachine enemyBrain,
-            Animator animator, NavMeshAgent navMeshAgent)
+        public ChasingState(WolfStateMachine enemyBrain, Animator animator, NavMeshAgent navMeshAgent)
         {
             this.enemyBrain = enemyBrain;
             transform = enemyBrain.transform;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
-            this.player = enemyBrain.Player;
         }
 
         public void Enter()
         {
+            player = enemyBrain.Player; // <-- Здесь получаем игрока!
             waitTime = startWaitTime;
             enemyBrain.Move(speedRun);
-            navMeshAgent.SetDestination(player.position);
+
+            if (player != null)
+                navMeshAgent.SetDestination(player.position);
         }
 
         public void Update()
         {
             animator.SetBool("isChasing", navMeshAgent.velocity.magnitude > 0.1f);
+
             if (enemyBrain.PlayerInSight(out Transform player))
             {
                 navMeshAgent.SetDestination(player.position);

@@ -1,62 +1,64 @@
-п»їusing UnityEngine;
+using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 
 namespace Enemy.StateMachine
 {
-    public class AttackState : IEnemyState
+    public class AttackStateBoss : IEnemyState
     {
-        private WolfStateMachine enemyBrain;
+        private BossStateMachine bossStateMachine;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
-        private Transform player; // РџРѕР»СѓС‡Р°С‚СЊ Р±СѓРґРµРј РїРѕР·Р¶Рµ!
+        private Transform player;
 
-        private int damage = 20;
-        private float attackInterval = 5f;
+        private int damage = 40; // Босс бьет сильнее
+        private float attackInterval = 3f; // Бьет чаще, чем волк
         private Player.HealthPoints playerHealth;
         private Coroutine attackCoroutine;
 
-        public AttackState(WolfStateMachine enemyBrain, Animator animator, NavMeshAgent navMeshAgent)
+        public AttackStateBoss(BossStateMachine bossStateMachine, Animator animator, NavMeshAgent navMeshAgent)
         {
-            this.enemyBrain = enemyBrain;
+            this.bossStateMachine = bossStateMachine;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
+            this.player = bossStateMachine.Player;
         }
 
         public void Enter()
         {
-            player = enemyBrain.Player; // <-- РџРѕР»СѓС‡Р°РµРј Р·РґРµСЃСЊ
-            if (player == null)
-            {
-                Debug.LogError("Player is NULL in AttackState.Enter()");
-                return;
-            }
+            bossStateMachine.Stop();
+            animator.SetBool("isAttacking", true);
 
             playerHealth = player.GetComponent<Player.HealthPoints>();
 
-            enemyBrain.Stop();
-            animator.SetBool("isAttacking", true);
-
             if (attackCoroutine == null && playerHealth != null)
             {
-                attackCoroutine = enemyBrain.StartCoroutine(PeriodicAttack());
+                attackCoroutine = bossStateMachine.StartCoroutine(PeriodicAttack());
             }
         }
 
         public void Update()
         {
-            if (!enemyBrain.PlayerInAttackDistance())
+            if (bossStateMachine.PlayerInStrongAttackDistance())
             {
-                enemyBrain.ChangeState(WolfStates.Chase);
+                bossStateMachine.ChangeState(BossStates.StrongAttack);
+                return;
+            }
+
+            if (!bossStateMachine.PlayerInAttackDistance())
+            {
+                bossStateMachine.ChangeState(BossStates.Aggressive);
             }
         }
+
 
         public void Exit()
         {
             animator.SetBool("isAttacking", false);
+
             if (attackCoroutine != null)
             {
-                enemyBrain.StopCoroutine(attackCoroutine);
+                bossStateMachine.StopCoroutine(attackCoroutine);
                 attackCoroutine = null;
             }
         }
@@ -72,4 +74,5 @@ namespace Enemy.StateMachine
         }
     }
 }
+
 
