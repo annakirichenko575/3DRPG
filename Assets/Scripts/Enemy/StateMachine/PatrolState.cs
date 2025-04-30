@@ -34,11 +34,23 @@ namespace Enemy.StateMachine
 
         public void Update()
         {
+            if (GameModeManager.Instance.CurrentMode == GameMode.Peaceful)
+            {
+                Patroling(); 
+                if (enemyBrain.HealthPercent < 0.3f)
+                {
+                    enemyBrain.ChangeState(WolfStates.Runaway);
+                }
+                else if (enemyBrain.WasAttacked)
+                {
+                    return;
+                }
+
+                return;
+            }
+
             if (enemyBrain.PlayerInSight(out Transform player))
             {
-                //Attack();
-                //or
-                //Chasing();
                 enemyBrain.ChangeState(WolfStates.Chase);
             }
             else

@@ -11,8 +11,8 @@ namespace Enemy.StateMachine
         private NavMeshAgent navMeshAgent;
         private Transform player;
 
-        private int damage = 40; // Босс бьет сильнее
-        private float attackInterval = 3f; // Бьет чаще, чем волк
+        private int damage = 40; 
+        private float attackInterval = 3f; 
         private Player.HealthPoints playerHealth;
         private Coroutine attackCoroutine;
 

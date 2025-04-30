@@ -9,7 +9,7 @@ namespace Enemy.StateMachine
         private WolfStateMachine enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
-        private Transform player; // Получать будем позже!
+        private Transform player; 
 
         private int damage = 20;
         private float attackInterval = 5f;
@@ -25,7 +25,7 @@ namespace Enemy.StateMachine
 
         public void Enter()
         {
-            player = enemyBrain.Player; // <-- Получаем здесь
+            player = enemyBrain.Player; 
             if (player == null)
             {
                 Debug.LogError("Player is NULL in AttackState.Enter()");

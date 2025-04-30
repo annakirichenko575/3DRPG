@@ -9,7 +9,7 @@ namespace Enemy.StateMachine
         private Animator animator;
         private NavMeshAgent navMeshAgent;
         private Transform transform;
-        private Transform player; // Теперь получаем позже!
+        private Transform player; 
 
         private float waitTime;
         private float speedRun = 5f;
@@ -25,7 +25,7 @@ namespace Enemy.StateMachine
 
         public void Enter()
         {
-            player = enemyBrain.Player; // <-- Здесь получаем игрока!
+            player = enemyBrain.Player; 
             waitTime = startWaitTime;
             enemyBrain.Move(speedRun);
 

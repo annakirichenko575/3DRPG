@@ -11,43 +11,58 @@ namespace Enemy.StateMachine
         private WolfStateMachine enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
-        private Vector3 targetPosition;
 
-        private float speedRun = 5;
+        private float speedRun = 5f;
+        private float safeDistance = 15f;
 
-        public RunawayState(WolfStateMachine enemyStateMachine, 
+        public RunawayState(WolfStateMachine enemyStateMachine,
             Animator animator, NavMeshAgent navMeshAgent, Vector3 targetPosition)
         {
             this.enemyBrain = enemyStateMachine;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
-            this.targetPosition = targetPosition;
         }
 
         public void Enter()
         {
-            enemyBrain.Move(speedRun);
-            navMeshAgent.SetDestination(targetPosition);
             animator.SetTrigger(ToRunawayName);
+            enemyBrain.Move(speedRun);
+            SetRunawayDestination();
         }
 
         public void Update()
         {
-            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+            if (Vector3.Distance(enemyBrain.transform.position, enemyBrain.Player.position) >= safeDistance)
             {
                 animator.SetTrigger(ToIdleName);
-                enemyBrain.Stop();
-                if (enemyBrain.PlayerInAttackDistance())
-                {
-                    enemyBrain.ChangeState(WolfStates.Attack);
-                }
+                enemyBrain.ChangeState(WolfStates.Patrol);
+            }
+            else if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 1f)
+            {
+                SetRunawayDestination(); 
             }
         }
 
         public void Exit()
         {
-            enemyBrain.Stop();
             animator.SetTrigger(ToIdleName);
+            enemyBrain.Stop();
+        }
+
+        private void SetRunawayDestination()
+        {
+            Vector3 directionAway = (enemyBrain.transform.position - enemyBrain.Player.position).normalized;
+            Vector3 fleeTarget = enemyBrain.transform.position + directionAway * safeDistance;
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(fleeTarget, out hit, 5f, NavMesh.AllAreas))
+            {
+                navMeshAgent.SetDestination(hit.position);
+            }
+            else
+            {
+                navMeshAgent.SetDestination(enemyBrain.transform.position + directionAway * 5f);
+            }
         }
     }
 }

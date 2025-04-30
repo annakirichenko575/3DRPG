@@ -5,6 +5,7 @@ using Player;
 using Infrastructure.Services;
 using Infrastructure;
 using System.Collections.Generic;
+using Enemy;
 
 namespace Enemy.StateMachine
 {
@@ -31,13 +32,25 @@ namespace Enemy.StateMachine
         private IEnemyState currentState;
         private Animator animator;
         private Transform player;
+        private Enemy.HealthPoints healthPoints;
 
         public Transform Player => player;
+
+        private bool wasAttacked;
+        private float attackedResetTimer;
+
+        public bool WasAttacked { get; private set; } = false;
+        public float HealthPercent => healthPoints != null ? (float)healthPoints.Health / healthPoints.MaxHealth : 1f;
 
         private void Awake()
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
+            healthPoints = GetComponent<HealthPoints>();
+            healthPoints.OnHit += () => WasAttacked = true;
+
+            if (healthPoints != null)
+                healthPoints.OnHit += OnEnemyHit;
             states = new Dictionary<WolfStates, IEnemyState>
             {
                 { WolfStates.Patrol, new PatrolState(this, animator, navMeshAgent) },
@@ -60,8 +73,8 @@ namespace Enemy.StateMachine
         private void Update()
         {
             currentState?.Update();
-            //ChangeState(WolfStates.Runaway);
-            
+            UpdateAttackedTimer();
+
         }
 
         public void ChangeState(WolfStates state)
@@ -119,5 +132,33 @@ namespace Enemy.StateMachine
 
         public int WaipointsCount() =>
             waypoints.Length;
+
+        private void OnEnemyHit()
+        {
+            if (healthPoints.IsDeath)
+                return; 
+
+            wasAttacked = true;
+            attackedResetTimer = 0;
+        }
+
+        private void UpdateAttackedTimer()
+        {
+            if (wasAttacked)
+            {
+                attackedResetTimer += Time.deltaTime;
+                if (attackedResetTimer >= 5f)
+                {
+                    wasAttacked = false;
+                    attackedResetTimer = 0;
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (healthPoints != null)
+                healthPoints.OnHit -= OnEnemyHit;
+        }
     }
 }
