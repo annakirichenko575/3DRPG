@@ -79,8 +79,6 @@ namespace Enemy.StateMachine
                 { FairyStates.Attack, new AttackStateFairy(this, animator, navMeshAgent) },
                 { FairyStates.Runaway, new RunawayStateFairy(this, animator, navMeshAgent, runawayPoint.position) }
             };
-
-            
         }
 
         private void Start()

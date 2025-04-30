@@ -24,11 +24,24 @@ namespace Enemy.StateMachine
 
         public void Update()
         {
-            if (bossStateMachine.PlayerInSight(out Transform player))
+            Transform player;
+
+            if (GameModeManager.Instance.CurrentMode == GameMode.Peaceful)
             {
-                bossStateMachine.ChangeState(BossStates.Aggressive);
+                if (bossStateMachine.WasAttacked && bossStateMachine.PlayerInSight(out player))
+                {
+                    bossStateMachine.ChangeState(BossStates.Aggressive);
+                }
+            }
+            else
+            {
+                if (bossStateMachine.PlayerInSight(out player))
+                {
+                    bossStateMachine.ChangeState(BossStates.Aggressive);
+                }
             }
         }
+
 
         public void Exit()
         {

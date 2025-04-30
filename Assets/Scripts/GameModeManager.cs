@@ -1,4 +1,4 @@
-/*
+/* part for better game and future UI
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,12 +41,11 @@ public enum GameMode
     Combat,
     Peaceful
 }
-//временная галочка до выбора режима из меню
+//temporary part for debug
 public class GameModeManager : MonoBehaviour
 {
     public static GameModeManager Instance { get; private set; }
 
-    [Header("Editor Toggle")]
     [SerializeField] private bool isPeacefulMode; 
 
     public GameMode CurrentMode { get; private set; } = GameMode.Combat;

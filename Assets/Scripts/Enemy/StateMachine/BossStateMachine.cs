@@ -32,12 +32,21 @@ namespace Enemy.StateMachine
         private Transform player;
 
         public Transform Player => player;
+        private Enemy.HealthPoints healthPoints;
+        private bool wasAttacked;
+        private float attackedResetTimer;
+        public bool WasAttacked { get; private set; } = false;
 
         private void Awake()
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             states = new Dictionary<BossStates, IEnemyState>();
+            healthPoints = GetComponent<HealthPoints>();
+            healthPoints.OnHit += () => WasAttacked = true;
+
+            if (healthPoints != null)
+                healthPoints.OnHit += OnEnemyHit;
         }
 
         private void Start()
@@ -120,5 +129,20 @@ namespace Enemy.StateMachine
 
         public int WaipointsCount() =>
             waypoints.Length;
+
+        private void OnEnemyHit()
+        {
+            if (healthPoints != null && healthPoints.IsDeath)
+                return;
+
+            wasAttacked = true;
+            attackedResetTimer = 0;
+
+            if (!WasAttacked)
+            {
+                WasAttacked = true;
+                ChangeState(BossStates.Aggressive);
+            }
+        }
     }
 }
