@@ -17,33 +17,30 @@ namespace Enemy.StateMachine
 
     public class FairyStateMachine : MonoBehaviour
     {
-        [Header("View Settings")]
         [SerializeField] private float viewRadius = 15f;
         [SerializeField] private float viewAngle = 90f;
         [SerializeField] private LayerMask playerMask;
         [SerializeField] private LayerMask obstacleMask;
 
-        [Header("Movement Settings")]
         [SerializeField] private float startWaitTime = 4f;
         [SerializeField] private float timeToRotate = 2f;
         [SerializeField] private float speedWalk = 4f;
         [SerializeField] private float speedRun = 6f;
 
-        [Header("Attack Settings")]
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private Transform firePoint;
-        [SerializeField] private float attackRadius = 8f;
-        [SerializeField] private float bulletSpeed = 20f;
-        [SerializeField] private float fireRate = 0.5f;
-        [SerializeField] private float attackDistance = 2.5f;
+        private float attackRadius = 8f;
+        private float bulletSpeed = 20f;
+        private float fireRate = 0.5f;
+        private float attackDistance = 2.5f;
 
-        [Header("Waypoints and Runaway")]
         [SerializeField] private Transform[] waypoints;
         [SerializeField] private Transform runawayPoint;
 
         private NavMeshAgent navMeshAgent;
         private Animator animator;
         private Transform player;
+        private Enemy.HealthPoints healthPoints;
 
         private Dictionary<FairyStates, IEnemyState> states;
         private IEnemyState currentState;
@@ -59,10 +56,21 @@ namespace Enemy.StateMachine
         public float SpeedRun => speedRun;
         public float StartWaitTime => startWaitTime;
 
+
+        private bool wasAttacked;
+        private float attackedResetTimer;
+        public bool WasAttacked { get; private set; } = false;
+        public float HealthPercent => healthPoints != null ? (float)healthPoints.Health / healthPoints.MaxHealth : 1f;
+
         private void Awake()
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
+            healthPoints = GetComponent<HealthPoints>();
+            healthPoints.OnHit += () => WasAttacked = true;
+
+            if (healthPoints != null)
+                healthPoints.OnHit += OnEnemyHit;
 
             states = new Dictionary<FairyStates, IEnemyState>
             {
@@ -71,6 +79,8 @@ namespace Enemy.StateMachine
                 { FairyStates.Attack, new AttackStateFairy(this, animator, navMeshAgent) },
                 { FairyStates.Runaway, new RunawayStateFairy(this, animator, navMeshAgent, runawayPoint.position) }
             };
+
+            
         }
 
         private void Start()
@@ -88,6 +98,7 @@ namespace Enemy.StateMachine
         {
             currentState?.Update();
             EnviromentView();
+            UpdateAttackedTimer();
         }
 
         public void ChangeState(FairyStates newState)
@@ -213,6 +224,28 @@ namespace Enemy.StateMachine
             foreach (var bullet in existingBullets)
             {
                 bullet.SetActive(false);
+            }
+        }
+
+        private void OnEnemyHit()
+        {
+            if (healthPoints != null && healthPoints.IsDeath)
+                return;
+
+            wasAttacked = true;
+            attackedResetTimer = 0;
+        }
+
+        private void UpdateAttackedTimer()
+        {
+            if (wasAttacked)
+            {
+                attackedResetTimer += Time.deltaTime;
+                if (attackedResetTimer >= 5f)
+                {
+                    wasAttacked = false;
+                    attackedResetTimer = 0;
+                }
             }
         }
     }

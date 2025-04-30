@@ -33,6 +33,17 @@ namespace Enemy.StateMachine
 
         public void Update()
         {
+            if (GameModeManager.Instance.CurrentMode == GameMode.Peaceful)
+            {
+                Patrol();
+
+                if (enemyBrain.WasAttacked && enemyBrain.HealthPercent < 0.3f)
+                {
+                    enemyBrain.ChangeState(FairyStates.Runaway);
+                }
+
+                return;
+            }
             if (enemyBrain.PlayerInSight(out Transform player))
             {
                 enemyBrain.ChangeState(FairyStates.Chase);

@@ -5,36 +5,64 @@ namespace Enemy.StateMachine
 {
     public class RunawayStateFairy : IEnemyState
     {
-        private FairyStateMachine enemyBrain;
-        private Animator animator;
-        private NavMeshAgent navMeshAgent;
-        private Vector3 runawayPosition;
+        private const string RunawayAnimBool = "ToRunaway";
 
-        public RunawayStateFairy(FairyStateMachine enemyBrain, Animator animator, NavMeshAgent navMeshAgent, Vector3 runawayPosition)
+        private readonly FairyStateMachine fairy;
+        private readonly Animator animator;
+        private readonly NavMeshAgent navMeshAgent;
+
+        private const float runawayDistance = 10f;
+        private const float checkInterval = 1f;
+        private float checkTimer;
+
+        public RunawayStateFairy(FairyStateMachine fairy, Animator animator, NavMeshAgent navMeshAgent, Vector3 targetPosition)
         {
-            this.enemyBrain = enemyBrain;
+            this.fairy = fairy;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
-            this.runawayPosition = runawayPosition;
         }
 
         public void Enter()
         {
-            enemyBrain.Move(enemyBrain.SpeedRun);
-            navMeshAgent.SetDestination(runawayPosition);
+            animator.SetBool(RunawayAnimBool, true);
+            fairy.Move(fairy.SpeedRun);
+            RunAwayFromPlayer();
         }
 
         public void Update()
         {
-            if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+            checkTimer += Time.deltaTime;
+
+            if (checkTimer >= checkInterval)
             {
-                enemyBrain.ChangeState(FairyStates.Patrol);
+                RunAwayFromPlayer();
+                checkTimer = 0f;
+            }
+
+            if (!fairy.WasAttacked || fairy.HealthPercent > 0.5f)
+            {
+                fairy.ChangeState(FairyStates.Patrol);
             }
         }
 
         public void Exit()
         {
-            enemyBrain.Stop();
+            animator.SetBool(RunawayAnimBool, false);
+        }
+
+        private void RunAwayFromPlayer()
+        {
+            if (fairy.Player == null)
+                return;
+
+            Vector3 directionAway = (fairy.transform.position - fairy.Player.position).normalized;
+            Vector3 newDestination = fairy.transform.position + directionAway * runawayDistance;
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(newDestination, out hit, 5f, NavMesh.AllAreas))
+            {
+                navMeshAgent.SetDestination(hit.position);
+            }
         }
     }
 }
