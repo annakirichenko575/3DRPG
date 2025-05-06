@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Infrastructure.States;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Enemy.StateMachine
@@ -6,8 +7,9 @@ namespace Enemy.StateMachine
     public class PatrolState : IEnemyState
     {
         private const string PatrolStateName = "isPatroling";
-
-        private WolfStateMachine enemyBrain;
+        private readonly GameStateMachine stateMachine;
+        private EnemyPerception perception;
+        private WolfBehaviour enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
         private int currentWaypointIndex;
@@ -16,9 +18,12 @@ namespace Enemy.StateMachine
         private float startWaitTime = 4;
         private float speedWalk = 4;
 
-        public PatrolState(WolfStateMachine enemy, Animator animator, NavMeshAgent navMeshAgent)
+        public PatrolState(GameStateMachine stateMachine, WolfBehaviour enemy, 
+            EnemyPerception perception, Animator animator, NavMeshAgent navMeshAgent)
         {
+            this.stateMachine = stateMachine;
             this.enemyBrain = enemy;
+            this.perception = perception;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
         }
@@ -39,7 +44,7 @@ namespace Enemy.StateMachine
                 Patroling(); 
                 if (enemyBrain.HealthPercent < 0.3f)
                 {
-                    enemyBrain.ChangeState(WolfStates.Runaway);
+                    stateMachine.Enter<RunawayState>();
                 }
                 else if (enemyBrain.WasAttacked)
                 {
@@ -49,9 +54,9 @@ namespace Enemy.StateMachine
                 return;
             }
 
-            if (enemyBrain.PlayerInSight(out Transform player))
+            if (perception.PlayerInSight(out Transform player))
             {
-                enemyBrain.ChangeState(WolfStates.Chase);
+                stateMachine.Enter<ChasingState>();
             }
             else
             {

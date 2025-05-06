@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using Infrastructure.States;
 
 namespace Enemy.StateMachine
 {
     public class AttackState : IEnemyState
     {
-        private WolfStateMachine enemyBrain;
+        private readonly GameStateMachine stateMachine;
+        private WolfBehaviour enemyBrain;
+        private EnemyPerception perceptions;
         private Animator animator;
-        private NavMeshAgent navMeshAgent;
         private Transform player; 
 
         private int damage = 20;
@@ -16,11 +18,12 @@ namespace Enemy.StateMachine
         private Player.HealthPoints playerHealth;
         private Coroutine attackCoroutine;
 
-        public AttackState(WolfStateMachine enemyBrain, Animator animator, NavMeshAgent navMeshAgent)
+        public AttackState(GameStateMachine stateMachine, WolfBehaviour enemyBrain, EnemyPerception perceptions, Animator animator)
         {
+            this.stateMachine = stateMachine;
             this.enemyBrain = enemyBrain;
+            this.perceptions = perceptions;
             this.animator = animator;
-            this.navMeshAgent = navMeshAgent;
         }
 
         public void Enter()
@@ -45,9 +48,9 @@ namespace Enemy.StateMachine
 
         public void Update()
         {
-            if (!enemyBrain.PlayerInAttackDistance())
+            if (!perceptions.PlayerInAttackDistance())
             {
-                enemyBrain.ChangeState(WolfStates.Chase);
+                stateMachine.Enter<ChasingState>();
             }
         }
 

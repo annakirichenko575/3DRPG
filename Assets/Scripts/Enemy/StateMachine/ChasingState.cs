@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+﻿using Infrastructure.States;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Enemy.StateMachine
 {
     public class ChasingState : IEnemyState
     {
-        private WolfStateMachine enemyBrain;
+        private readonly GameStateMachine stateMachine;
+        private WolfBehaviour enemyBrain;
+        private EnemyPerception perceptions;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
         private Transform transform;
@@ -15,9 +18,11 @@ namespace Enemy.StateMachine
         private float speedRun = 5f;
         private float startWaitTime = 4f;
 
-        public ChasingState(WolfStateMachine enemyBrain, Animator animator, NavMeshAgent navMeshAgent)
+        public ChasingState(GameStateMachine stateMachine, WolfBehaviour enemyBrain, EnemyPerception perceptions, Animator animator, NavMeshAgent navMeshAgent)
         {
+            this.stateMachine = stateMachine;
             this.enemyBrain = enemyBrain;
+            this.perceptions = perceptions;
             transform = enemyBrain.transform;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
@@ -37,14 +42,14 @@ namespace Enemy.StateMachine
         {
             animator.SetBool("isChasing", navMeshAgent.velocity.magnitude > 0.1f);
 
-            if (enemyBrain.PlayerInSight(out Transform player))
+            if (perceptions.PlayerInSight(out Transform player))
             {
                 navMeshAgent.SetDestination(player.position);
             }
 
-            if (enemyBrain.PlayerInAttackDistance())
+            if (perceptions.PlayerInAttackDistance())
             {
-                enemyBrain.ChangeState(WolfStates.Attack);
+                stateMachine.Enter<AttackState>();
             }
             else if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
@@ -52,7 +57,7 @@ namespace Enemy.StateMachine
                 waitTime -= Time.deltaTime;
                 if (waitTime <= 0)
                 {
-                    enemyBrain.ChangeState(WolfStates.Patrol);
+                    stateMachine.Enter<PatrolState>();
                 }
             }
         }

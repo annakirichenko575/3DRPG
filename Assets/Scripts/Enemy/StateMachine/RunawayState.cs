@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Infrastructure.States;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Enemy.StateMachine
@@ -7,17 +8,18 @@ namespace Enemy.StateMachine
     {
         private const string ToIdleName = "ToIdle";
         private const string ToRunawayName = "ToRunaway";
-
-        private WolfStateMachine enemyBrain;
+        private readonly GameStateMachine stateMachine;
+        private WolfBehaviour enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
 
         private float speedRun = 5f;
         private float safeDistance = 15f;
 
-        public RunawayState(WolfStateMachine enemyStateMachine,
+        public RunawayState(GameStateMachine stateMachine, WolfBehaviour enemyStateMachine,
             Animator animator, NavMeshAgent navMeshAgent, Vector3 targetPosition)
         {
+            this.stateMachine = stateMachine;
             this.enemyBrain = enemyStateMachine;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
@@ -35,7 +37,7 @@ namespace Enemy.StateMachine
             if (Vector3.Distance(enemyBrain.transform.position, enemyBrain.Player.position) >= safeDistance)
             {
                 animator.SetTrigger(ToIdleName);
-                enemyBrain.ChangeState(WolfStates.Patrol);
+                stateMachine.Enter<PatrolState>();
             }
             else if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 1f)
             {

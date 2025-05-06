@@ -6800,10 +6800,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5429318264068596642, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
-      propertyPath: IsRunning
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5429318264068596642, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
       propertyPath: runawayPoint
       value: 
       objectReference: {fileID: 913452964}

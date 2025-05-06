@@ -1271,19 +1271,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b555d850636a7844791d2e8239838579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 15
-  viewAngle: 90
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 128
-  attackDistance: 6
+  perceptions:
+    playerMask:
+      serializedVersion: 2
+      m_Bits: 64
+    obstacleMask:
+      serializedVersion: 2
+      m_Bits: 128
+    viewRadius: 15
+    viewAngle: 90
+    attackDistance: 6
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  runawayPoint: {fileID: 0}
 --- !u!195 &2791549383810430044
 NavMeshAgent:
   m_ObjectHideFlags: 0
