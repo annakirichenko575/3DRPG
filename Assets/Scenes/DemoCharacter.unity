@@ -4757,6 +4757,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 130367018}
+  - component: {fileID: 130367019}
   m_Layer: 0
   m_Name: SpPoint1
   m_TagString: Untagged
@@ -4779,6 +4780,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 902159958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &130367019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130367017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a41e6e19e7df5d4db0419b5101652c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &130844821
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6817,11 +6830,11 @@ PrefabInstance:
       objectReference: {fileID: 875897700}
     - target: {fileID: 7915622552628407489, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8044656763537006919, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8125747485547315196, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
       propertyPath: cam
@@ -6870,6 +6883,10 @@ PrefabInstance:
     - target: {fileID: 8914286996971816111, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
       propertyPath: m_Name
       value: Wolfboss_A
+      objectReference: {fileID: 0}
+    - target: {fileID: 8914286996971816111, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8715,11 +8732,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8581320748509000496, guid: b7d6cb924781ef34980ed271c748a6b4, type: 3}
   m_PrefabInstance: {fileID: 283842228}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &289325265 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8914286996971816111, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
-  m_PrefabInstance: {fileID: 218216759}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &292086068
 GameObject:
@@ -11094,6 +11106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 401265563}
+  - component: {fileID: 401265564}
   m_Layer: 0
   m_Name: SpPoint3
   m_TagString: Untagged
@@ -11116,6 +11129,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 902159958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.912}
+--- !u!114 &401265564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401265562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a41e6e19e7df5d4db0419b5101652c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &408063800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25564,7 +25589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fairyPrefab: {fileID: 99353214}
-  wolfbossPrefab: {fileID: 289325265}
+  wolfbossPrefab: {fileID: 8914286996971816111, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
   fairySpawnPoints:
   - {fileID: 401265563}
   - {fileID: 1250767942}
@@ -25573,7 +25598,8 @@ MonoBehaviour:
   - {fileID: 130367018}
   - {fileID: 1881008189}
   - {fileID: 1812307762}
-  spawnCount: 2
+  spawnCount: 3
+  wolfRunawayPoint: {fileID: 913452964}
 --- !u!1001 &903123857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28718,6 +28744,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1069701032}
+  - component: {fileID: 1069701033}
   m_Layer: 0
   m_Name: SpPoint5
   m_TagString: Untagged
@@ -28740,6 +28767,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 902159958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1069701033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069701031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a41e6e19e7df5d4db0419b5101652c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1079045311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33831,6 +33870,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1250767942}
+  - component: {fileID: 1250767943}
   m_Layer: 0
   m_Name: SpPoint4
   m_TagString: Untagged
@@ -33853,6 +33893,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 902159958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1250767943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250767941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a41e6e19e7df5d4db0419b5101652c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1256913581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34562,7 +34614,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb3a20328acb7a4b890756f97965045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 8104754412541582414}
 --- !u!114 &1287654205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48772,6 +48823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1812307762}
+  - component: {fileID: 1812307763}
   m_Layer: 0
   m_Name: SpPoint6
   m_TagString: Untagged
@@ -48794,6 +48846,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 902159958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.912}
+--- !u!114 &1812307763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812307761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a41e6e19e7df5d4db0419b5101652c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1818200785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50408,6 +50472,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1881008189}
+  - component: {fileID: 1881008190}
   m_Layer: 0
   m_Name: SpPoint2
   m_TagString: Untagged
@@ -50430,6 +50495,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 902159958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1881008190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881008188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a41e6e19e7df5d4db0419b5101652c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1887330397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58318,8 +58395,8 @@ SceneRoots:
   - {fileID: 292086069}
   - {fileID: 1287790087}
   - {fileID: 705507995}
-  - {fileID: 8104754412541582412}
   - {fileID: 218216759}
+  - {fileID: 8104754412541582412}
   - {fileID: 7466464223181402257}
   - {fileID: 1200091784}
   - {fileID: 1240036969}

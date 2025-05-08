@@ -7,7 +7,7 @@ namespace Enemy.StateMachine
 {
     public class AttackState : IEnemyState
     {
-        private readonly GameStateMachine stateMachine;
+        private readonly EnemyStateMachine stateMachine;
         private WolfBehaviour enemyBrain;
         private EnemyPerception perceptions;
         private Animator animator;
@@ -18,12 +18,15 @@ namespace Enemy.StateMachine
         private Player.HealthPoints playerHealth;
         private Coroutine attackCoroutine;
 
-        public AttackState(GameStateMachine stateMachine, WolfBehaviour enemyBrain, EnemyPerception perceptions, Animator animator)
+        public AttackState(EnemyStateMachine stateMachine, WolfBehaviour enemyBrain, 
+            EnemyPerception perceptions, Animator animator, int damage, float attackInterval)
         {
             this.stateMachine = stateMachine;
             this.enemyBrain = enemyBrain;
             this.perceptions = perceptions;
             this.animator = animator;
+            this.damage = damage;
+            this.attackInterval = attackInterval;
         }
 
         public void Enter()

@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
-using Infrastructure.Services;
 using Infrastructure;
 using System.Collections.Generic;
 using Infrastructure.States;
@@ -10,39 +9,50 @@ namespace Enemy.StateMachine
 {
     public class WolfBehaviour : MonoBehaviour
     {
-        [SerializeField] private EnemyPerception perceptions = new EnemyPerception();
-        [SerializeField] private Transform[] waypoints;
-        [SerializeField] private Transform runawayPoint;
+        public static readonly int AttackTypeHash = Animator.StringToHash("AttackType");
 
-        private GameStateMachine stateMachine;
+        [SerializeField] private EnemyPerception perceptions = new EnemyPerception();
+        
+        private Transform[] waypoints;
+        private EnemyStateMachine stateMachine;
         private NavMeshAgent navMeshAgent;
         private Animator animator;
-        private Transform player;
         private Enemy.HealthPoints healthPoints;
-
-        public Transform Player => player;
+        private Transform runawayPoint;
 
         private bool wasAttacked;
         private float attackedResetTimer;
+        private int damage = 20;
+        private float attackInterval = 5f;
+        private float attackType;
+        private PlayerFactory playerFactory;
 
+        public Transform Player => playerFactory.Player;
         public bool WasAttacked { get; private set; } = false;
-        public float HealthPercent => healthPoints != null ? (float)healthPoints.Health / healthPoints.MaxHealth : 1f;
+        public float HealthPercent => 
+            healthPoints != null 
+            ? (float)healthPoints.Health / healthPoints.MaxHealth 
+            : 1f;
 
-        private void Awake()
+        public void Construct(PlayerFactory playerFactory,
+            Transform[] waypoints, Transform runawayPoint, 
+            int damage, float attackInterval, float attackType)
         {
+            this.runawayPoint = runawayPoint;
+            this.damage = damage;
+            this.attackInterval = attackInterval;
+            this.attackType = attackType;
+            this.waypoints = waypoints;
+
             navMeshAgent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
+            animator.SetFloat(AttackTypeHash, attackType);
             healthPoints = GetComponent<HealthPoints>();
             healthPoints.OnHit += () => WasAttacked = true;
-
-            if (healthPoints != null)
-                healthPoints.OnHit += OnEnemyHit;
-        }
-
-        private void Start()
-        {
-            player = AllServices.Container.Single<PlayerFactory>().Player;
-            perceptions.Initialize(transform, player);
+            healthPoints.OnHit += OnEnemyHit;
+        
+            this.playerFactory = playerFactory;
+            perceptions.Initialize(transform, Player);
             InitStateMachine();
 
             if (!navMeshAgent.enabled)
@@ -60,12 +70,12 @@ namespace Enemy.StateMachine
 
         private void InitStateMachine()
         {
-            stateMachine = new GameStateMachine();
+            stateMachine = new EnemyStateMachine();
             var states = new Dictionary<Type, IEnemyState>
             {
                 [typeof(PatrolState)] = new PatrolState(stateMachine, this, perceptions, animator, navMeshAgent),
                 [typeof(ChasingState)] = new ChasingState(stateMachine, this, perceptions, animator, navMeshAgent),
-                [typeof(AttackState)] = new AttackState(stateMachine, this, perceptions, animator),
+                [typeof(AttackState)] = new AttackState(stateMachine, this, perceptions, animator, damage, attackInterval),
                 [typeof(RunawayState)] = new RunawayState(stateMachine, this, animator, navMeshAgent, runawayPoint.position),
             };
             stateMachine.Initialize(states);
@@ -118,58 +128,6 @@ namespace Enemy.StateMachine
 
         public int WaipointsCount() =>
             waypoints.Length;
-    }
-
-
-    [Serializable]
-    public class EnemyPerception
-    {
-        [SerializeField] private LayerMask playerMask;
-        [SerializeField] private LayerMask obstacleMask;
-        [SerializeField] private float viewRadius = 15;
-        [SerializeField] private float viewAngle = 90;
-        [SerializeField] private float attackDistance = 2.5f;
-
-        private Transform transform;
-        private Transform player;
-        
-        public void Initialize(Transform transform, Transform player)
-        {
-            this.transform = transform;
-            this.player = player;
-        }
-
-        public bool PlayerInSight(out Transform player) =>
-            PlayerInRange(out player) && ObstacleCheck(player.position) == false;
-
-        public bool PlayerInRange(out Transform player)
-        {
-
-            Collider[] playerInRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);
-
-            for (int i = 0; i < playerInRange.Length; i++)
-            {
-                player = playerInRange[i].transform;
-                Vector3 dirToPlayer = (player.position - transform.position).normalized;
-                if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
-                {
-                    return true;
-                }
-            }
-            player = null;
-            return false;
-        }
-
-        public bool ObstacleCheck(Vector3 playerPosition)
-        {
-            Vector3 dirToPlayer = (playerPosition - transform.position).normalized;
-            float dstToPlayer = Vector3.Distance(transform.position, playerPosition);
-            return Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask);
-        }
-
-        public bool PlayerInAttackDistance() =>
-            Vector3.Distance(transform.position, player.position) <= attackDistance;
-
     }
 
 }

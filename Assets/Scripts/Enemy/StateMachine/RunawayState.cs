@@ -8,7 +8,7 @@ namespace Enemy.StateMachine
     {
         private const string ToIdleName = "ToIdle";
         private const string ToRunawayName = "ToRunaway";
-        private readonly GameStateMachine stateMachine;
+        private readonly EnemyStateMachine stateMachine;
         private WolfBehaviour enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
@@ -16,7 +16,7 @@ namespace Enemy.StateMachine
         private float speedRun = 5f;
         private float safeDistance = 15f;
 
-        public RunawayState(GameStateMachine stateMachine, WolfBehaviour enemyStateMachine,
+        public RunawayState(EnemyStateMachine stateMachine, WolfBehaviour enemyStateMachine,
             Animator animator, NavMeshAgent navMeshAgent, Vector3 targetPosition)
         {
             this.stateMachine = stateMachine;

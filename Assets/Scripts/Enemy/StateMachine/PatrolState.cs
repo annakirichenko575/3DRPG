@@ -7,7 +7,7 @@ namespace Enemy.StateMachine
     public class PatrolState : IEnemyState
     {
         private const string PatrolStateName = "isPatroling";
-        private readonly GameStateMachine stateMachine;
+        private readonly EnemyStateMachine stateMachine;
         private EnemyPerception perception;
         private WolfBehaviour enemyBrain;
         private Animator animator;
@@ -18,7 +18,7 @@ namespace Enemy.StateMachine
         private float startWaitTime = 4;
         private float speedWalk = 4;
 
-        public PatrolState(GameStateMachine stateMachine, WolfBehaviour enemy, 
+        public PatrolState(EnemyStateMachine stateMachine, WolfBehaviour enemy, 
             EnemyPerception perception, Animator animator, NavMeshAgent navMeshAgent)
         {
             this.stateMachine = stateMachine;

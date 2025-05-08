@@ -6,7 +6,7 @@ namespace Enemy.StateMachine
 {
     public class ChasingState : IEnemyState
     {
-        private readonly GameStateMachine stateMachine;
+        private readonly EnemyStateMachine stateMachine;
         private WolfBehaviour enemyBrain;
         private EnemyPerception perceptions;
         private Animator animator;
@@ -18,7 +18,7 @@ namespace Enemy.StateMachine
         private float speedRun = 5f;
         private float startWaitTime = 4f;
 
-        public ChasingState(GameStateMachine stateMachine, WolfBehaviour enemyBrain, EnemyPerception perceptions, Animator animator, NavMeshAgent navMeshAgent)
+        public ChasingState(EnemyStateMachine stateMachine, WolfBehaviour enemyBrain, EnemyPerception perceptions, Animator animator, NavMeshAgent navMeshAgent)
         {
             this.stateMachine = stateMachine;
             this.enemyBrain = enemyBrain;

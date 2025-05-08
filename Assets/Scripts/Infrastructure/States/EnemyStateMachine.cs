@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 namespace Infrastructure.States
 {
-    public class GameStateMachine
+    public class EnemyStateMachine
     {
         private Dictionary<Type, IEnemyState> _states;
         private IEnemyState _activeState;
 
         public void Initialize(Dictionary<Type, IEnemyState> states)
         {
-            _states = states;
+            _states = new Dictionary<Type, IEnemyState>(states);
         }
 
         public void Enter<TState>() where TState : class, IEnemyState

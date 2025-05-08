@@ -13,15 +13,12 @@ namespace Infrastructure
             LevelInitialize();
         }
 
-        private static void LevelInitialize()
+        private void Update()
         {
-            bool isFirstStart = AllServices.Container.Single<SceneLoader>().IsFirstStart;
-            if (isFirstStart == false)
+            if (Input.GetKeyDown(KeyCode.X))
             {
-                AllServices.Container.Single<PlayerRepository>().LoadData();
+                PlayerPrefs.DeleteAll();
             }
-
-            AllServices.Container.Single<PlayerFactory>().Initialize(isFirstStart);
         }
 
         private void Registrate()
@@ -36,12 +33,23 @@ namespace Infrastructure
             AllServices.Container.RegisterSingle<SceneLoader>(sceneLoader);
         }
 
-        private void Update()
+        private void LevelInitialize()
         {
-            if (Input.GetKeyDown(KeyCode.X))
+            bool isFirstStart = AllServices.Container.Single<SceneLoader>().IsFirstStart;
+            if (isFirstStart == false)
             {
-                PlayerPrefs.DeleteAll();
+                AllServices.Container.Single<PlayerRepository>().LoadData();
+            }
+
+            PlayerFactory playerFactory = AllServices.Container.Single<PlayerFactory>();
+            playerFactory.Initialize(isFirstStart);
+
+            MonsterSpawner[] spawners = FindObjectsOfType<MonsterSpawner>();
+            for (int i = 0; i < spawners.Length; i++)
+            {
+                spawners[i].Construct(playerFactory);
             }
         }
+
     }
 }
