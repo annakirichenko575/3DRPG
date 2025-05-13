@@ -1,56 +1,58 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Infrastructure.States;
 using System.Collections;
 
 namespace Enemy.StateMachine
 {
     public class AttackStateBoss : IEnemyState
     {
-        private BossStateMachine bossStateMachine;
-        private Animator animator;
-        private NavMeshAgent navMeshAgent;
-        private Transform player;
+        private readonly EnemyStateMachine stateMachine;
+        private readonly BossBehaviour boss;
+        private readonly Animator animator;
+        private readonly NavMeshAgent navMeshAgent;
 
-        private int damage = 40; 
-        private float attackInterval = 3f; 
+        private Transform player;
+        private int damage = 40;
+        private float attackInterval = 3f;
         private Player.HealthPoints playerHealth;
         private Coroutine attackCoroutine;
 
-        public AttackStateBoss(BossStateMachine bossStateMachine, Animator animator, NavMeshAgent navMeshAgent)
+        public AttackStateBoss(EnemyStateMachine stateMachine, BossBehaviour boss, Animator animator, NavMeshAgent navMeshAgent)
         {
-            this.bossStateMachine = bossStateMachine;
+            this.stateMachine = stateMachine;
+            this.boss = boss;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
-            this.player = bossStateMachine.Player;
+            this.player = boss.Player;
         }
 
         public void Enter()
         {
-            bossStateMachine.Stop();
+            boss.Stop();
             animator.SetBool("isAttacking", true);
 
             playerHealth = player.GetComponent<Player.HealthPoints>();
 
             if (attackCoroutine == null && playerHealth != null)
             {
-                attackCoroutine = bossStateMachine.StartCoroutine(PeriodicAttack());
+                attackCoroutine = boss.StartCoroutine(PeriodicAttack());
             }
         }
 
         public void Update()
         {
-            if (bossStateMachine.PlayerInStrongAttackDistance())
+            if (boss.PlayerInStrongAttackDistance())
             {
-                bossStateMachine.ChangeState(BossStates.StrongAttack);
+                stateMachine.Enter<StrongAttackState>();
                 return;
             }
 
-            if (!bossStateMachine.PlayerInAttackDistance())
+            if (!boss.PlayerInAttackDistance())
             {
-                bossStateMachine.ChangeState(BossStates.Aggressive);
+                stateMachine.Enter<AggressiveState>();
             }
         }
-
 
         public void Exit()
         {
@@ -58,7 +60,7 @@ namespace Enemy.StateMachine
 
             if (attackCoroutine != null)
             {
-                bossStateMachine.StopCoroutine(attackCoroutine);
+                boss.StopCoroutine(attackCoroutine);
                 attackCoroutine = null;
             }
         }
@@ -70,9 +72,11 @@ namespace Enemy.StateMachine
                 playerHealth.Hit(damage);
                 yield return new WaitForSeconds(attackInterval);
             }
+
             attackCoroutine = null;
         }
     }
 }
+
 
 

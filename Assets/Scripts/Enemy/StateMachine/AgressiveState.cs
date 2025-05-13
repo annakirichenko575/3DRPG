@@ -1,66 +1,65 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Infrastructure.States;
 
 namespace Enemy.StateMachine
 {
     public class AggressiveState : IEnemyState
     {
-        private BossStateMachine bossStateMachine;
-        private Animator animator;
-        private NavMeshAgent navMeshAgent;
-        private Transform player;
-        private Transform transform;
+        private readonly EnemyStateMachine stateMachine;
+        private readonly BossBehaviour boss;
+        private readonly Animator animator;
+        private readonly NavMeshAgent navMeshAgent;
 
         private float waitTime;
         private const float startWaitTime = 4f;
         private float runSpeed = 5f;
 
-        public AggressiveState(BossStateMachine bossStateMachine, Animator animator, NavMeshAgent navMeshAgent)
+        public AggressiveState(EnemyStateMachine stateMachine, BossBehaviour boss, Animator animator, NavMeshAgent navMeshAgent)
         {
-            this.bossStateMachine = bossStateMachine;
+            this.stateMachine = stateMachine;
+            this.boss = boss;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
-            this.transform = bossStateMachine.transform;
-            this.player = bossStateMachine.Player;
         }
 
         public void Enter()
         {
             waitTime = startWaitTime;
-            bossStateMachine.Move(runSpeed);
+            boss.Move(runSpeed);
             animator.SetBool("isAgressive", true);
         }
 
         public void Update()
         {
-            if (bossStateMachine.PlayerInStrongAttackDistance())
+            if (boss.PlayerInStrongAttackDistance())
             {
-                bossStateMachine.ChangeState(BossStates.StrongAttack);
+                stateMachine.Enter<StrongAttackState>();
                 return;
             }
 
-            if (bossStateMachine.PlayerInAttackDistance())
+            if (boss.PlayerInAttackDistance())
             {
-                bossStateMachine.ChangeState(BossStates.Attack);
+                stateMachine.Enter<AttackStateBoss>();
                 return;
             }
 
-            if (bossStateMachine.PlayerInSight(out Transform player))
+            if (boss.PlayerInSight(out Transform player))
             {
                 navMeshAgent.SetDestination(player.position);
             }
             else
             {
-                bossStateMachine.ChangeState(BossStates.Idle);
+                stateMachine.Enter<IdleState>();
             }
         }
 
-
         public void Exit()
         {
-            bossStateMachine.Stop();
+            boss.Stop();
             animator.SetBool("isAgressive", false);
         }
     }
 }
+
 

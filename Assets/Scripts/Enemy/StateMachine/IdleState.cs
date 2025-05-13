@@ -1,24 +1,27 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Infrastructure.States;
 
 namespace Enemy.StateMachine
 {
     public class IdleState : IEnemyState
     {
-        private BossStateMachine bossStateMachine;
-        private Animator animator;
-        private NavMeshAgent navMeshAgent;
+        private readonly EnemyStateMachine stateMachine;
+        private readonly BossBehaviour boss;
+        private readonly Animator animator;
+        private readonly NavMeshAgent navMeshAgent;
 
-        public IdleState(BossStateMachine bossStateMachine, Animator animator, NavMeshAgent navMeshAgent)
+        public IdleState(EnemyStateMachine stateMachine, BossBehaviour boss, Animator animator, NavMeshAgent navMeshAgent)
         {
-            this.bossStateMachine = bossStateMachine;
+            this.stateMachine = stateMachine;
+            this.boss = boss;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
         }
 
         public void Enter()
         {
-            bossStateMachine.Stop();
+            boss.Stop();
             animator.SetBool("isIdle", true);
         }
 
@@ -28,20 +31,19 @@ namespace Enemy.StateMachine
 
             if (GameModeManager.Instance.CurrentMode == GameMode.Peaceful)
             {
-                if (bossStateMachine.WasAttacked && bossStateMachine.PlayerInSight(out player))
+                if (boss.WasAttacked && boss.PlayerInSight(out player))
                 {
-                    bossStateMachine.ChangeState(BossStates.Aggressive);
+                    stateMachine.Enter<AggressiveState>();
                 }
             }
             else
             {
-                if (bossStateMachine.PlayerInSight(out player))
+                if (boss.PlayerInSight(out player))
                 {
-                    bossStateMachine.ChangeState(BossStates.Aggressive);
+                    stateMachine.Enter<AggressiveState>();
                 }
             }
         }
-
 
         public void Exit()
         {
@@ -49,4 +51,5 @@ namespace Enemy.StateMachine
         }
     }
 }
+
 
