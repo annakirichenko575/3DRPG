@@ -3209,7 +3209,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2472691418213439987, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
   m_PrefabInstance: {fileID: 7466464223181402257}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &99353223
+--- !u!114 &99353224
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3218,29 +3218,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 99353214}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fc2ddb81a20a0c48ac4e5d9f9e8ab1f, type: 3}
+  m_Script: {fileID: 11500000, guid: 675d563bc2f4a6c4b99227daa56648b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 15
-  viewAngle: 120
+  perceptions:
+    playerMask:
+      serializedVersion: 2
+      m_Bits: 64
+    obstacleMask:
+      serializedVersion: 2
+      m_Bits: 128
+    viewRadius: 15
+    viewAngle: 90
+    attackDistance: 2.5
+  bulletPrefab: {fileID: 941435749049730702, guid: 65e5b8bab9df29642b94431840f27a9e, type: 3}
+  firePoint: {fileID: 1181572198}
   playerMask:
     serializedVersion: 2
     m_Bits: 64
   obstacleMask:
     serializedVersion: 2
     m_Bits: 128
-  startWaitTime: 4
-  timeToRotate: 1
-  speedWalk: 6
-  speedRun: 9
-  bulletPrefab: {fileID: 9182240560578513568, guid: dfef446d8dc52fb459f67f6be5f9ecf6, type: 3}
-  firePoint: {fileID: 1181572198}
-  waypoints:
-  - {fileID: 2090069185}
-  - {fileID: 1802968945}
-  - {fileID: 1690216593}
-  - {fileID: 485951949}
-  runawayPoint: {fileID: 913452964}
 --- !u!1001 &100644182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25837,6 +25835,11 @@ MonoBehaviour:
   - {fileID: 401265563}
   - {fileID: 1250767942}
   - {fileID: 1069701032}
+  fairyWaypoints:
+  - {fileID: 1920467112}
+  - {fileID: 1984629717}
+  - {fileID: 2090069185}
+  fairyRunawayPoint: {fileID: 913452964}
   wolfbossPrefab: {fileID: 8914286996971816111, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
   wolfbossSpawnPoints:
   - {fileID: 130367018}
@@ -41959,7 +41962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51a81cbe86dbf474c89d3fe90b89c248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPeacefulMode: 1
+  isPeacefulMode: 0
 --- !u!1001 &1523826035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58464,6 +58467,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: fairy
       objectReference: {fileID: 0}
+    - target: {fileID: 2472691418213439987, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2961982151973962569, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.490429
@@ -58539,7 +58546,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2472691418213439987, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 99353223}
+      addedObject: {fileID: 99353224}
   m_SourcePrefab: {fileID: 100100000, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
 --- !u!1001 &7830333839959431207
 PrefabInstance:

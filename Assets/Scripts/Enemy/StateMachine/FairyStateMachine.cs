@@ -5,7 +5,7 @@ using Player;
 using Infrastructure;
 using Infrastructure.Services;
 
-namespace Enemy.StateMachine
+/*namespace Enemy.StateMachine
 {
     public enum FairyStates
     {
@@ -248,4 +248,4 @@ namespace Enemy.StateMachine
         }
     }
 }
-
+*/

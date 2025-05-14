@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Infrastructure.States;
 
 namespace Enemy.StateMachine
 {
@@ -7,15 +8,17 @@ namespace Enemy.StateMachine
     {
         private const string AttackStateName = "isAttacking";
 
-        private FairyStateMachine enemyBrain;
+        private readonly EnemyStateMachine stateMachine;
+        private FairyBehaviour enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
 
         private Transform player;
         private Transform transform;
 
-        public AttackStateFairy(FairyStateMachine enemyBrain, Animator animator, NavMeshAgent navMeshAgent)
+        public AttackStateFairy(EnemyStateMachine stateMachine, FairyBehaviour enemyBrain, Animator animator, NavMeshAgent navMeshAgent)
         {
+            this.stateMachine = stateMachine;
             this.enemyBrain = enemyBrain;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
@@ -31,9 +34,9 @@ namespace Enemy.StateMachine
 
         public void Update()
         {
-            if (player == null)
+            if (player == null || !player.gameObject.activeInHierarchy)
             {
-                enemyBrain.ChangeState(FairyStates.Patrol);
+                stateMachine.Enter<PatrolStateFairy>(); // Исправлено
                 return;
             }
 
@@ -41,13 +44,14 @@ namespace Enemy.StateMachine
 
             if (distanceToPlayer > enemyBrain.AttackRadius)
             {
-                enemyBrain.ChangeState(FairyStates.Chase);
-                return;
+                stateMachine.Enter<ChasingStateFairy>(); // Исправлено
+                Debug.Log("Now chasing");
             }
-
-            enemyBrain.Attack();
+            else
+            {
+                enemyBrain.Attack();
+            }
         }
-
         public void Exit()
         {
             animator.SetBool(AttackStateName, false);

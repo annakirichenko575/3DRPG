@@ -7,6 +7,8 @@ public class MonsterSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject fairyPrefab;
     [SerializeField] private Transform[] fairySpawnPoints;
+    [SerializeField] private Transform[] fairyWaypoints;
+    [SerializeField] private Transform fairyRunawayPoint;
 
     [SerializeField] private GameObject wolfbossPrefab;
     [SerializeField] private Transform[] wolfbossSpawnPoints;
@@ -22,6 +24,8 @@ public class MonsterSpawner : MonoBehaviour
 
     private WolfFactory simpleWolfFactory;
     private WolfFactory strongWolfFactory;
+    private FairyFactory weakFairyFactory;
+    private FairyFactory strongFairyFactory;
     private BossFactory extraBossFactory;
 
     public void Construct(PlayerFactory playerFactory)
@@ -33,9 +37,12 @@ public class MonsterSpawner : MonoBehaviour
 
         simpleWolfFactory = new SimpleWolfFactory(playerFactory, wolfbossPrefab, wolfWaypoints, wolfRunawayPoint);
         strongWolfFactory = new StrongWolfFactory(playerFactory, wolfbossPrefab, wolfWaypoints, wolfRunawayPoint);
+        weakFairyFactory = new WeakFairyFactory(playerFactory, fairyPrefab, fairyWaypoints, fairyRunawayPoint);
+        strongFairyFactory = new StrongFairyFactory(playerFactory, fairyPrefab, fairyWaypoints, fairyRunawayPoint);
         extraBossFactory = new SimpleBossFactory(playerFactory, extraBossPrefab, extraBossSpawnPoint, bossWaypoints);
 
-        SpawnMonsters(fairyPrefab, new List<Transform>(fairySpawnPoints));
+        FairyFactory[] fairyFactories = new[] { weakFairyFactory, strongFairyFactory};
+        SpawnFairies(fairyFactories, fairySpawnPoints.ToList());
 
         WolfFactory[] wolfFactories = new[] { simpleWolfFactory, strongWolfFactory };
         SpawnWolves(wolfFactories, wolfbossSpawnPoints.ToList());
@@ -52,6 +59,20 @@ public class MonsterSpawner : MonoBehaviour
 
             int wolfIndex = GetRandomIndex(wolfFactories.Length);
             wolfFactories[wolfIndex].CreateWolf(spawnPoint.position);
+
+            availableSpawnPoints.RemoveAt(pointIndex);
+        }
+    }
+
+    private void SpawnFairies(FairyFactory[] fairyFactories, List<Transform> availableSpawnPoints)
+    {
+        for (int i = 0; i < spawnCount && availableSpawnPoints.Count > 0; i++)
+        {
+            int pointIndex = GetRandomIndex(availableSpawnPoints.Count);
+            Transform spawnPoint = availableSpawnPoints[pointIndex];
+
+            int wolfIndex = GetRandomIndex(fairyFactories.Length);
+            fairyFactories[wolfIndex].CreateFairy(spawnPoint.position);
 
             availableSpawnPoints.RemoveAt(pointIndex);
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Infrastructure.States;
 
 namespace Enemy.StateMachine
 {
@@ -7,7 +8,8 @@ namespace Enemy.StateMachine
     {
         private const string ChasingStateName = "isChasing";
 
-        private FairyStateMachine enemyBrain;
+        private readonly EnemyStateMachine stateMachine;
+        private FairyBehaviour enemyBrain;
         private Animator animator;
         private NavMeshAgent navMeshAgent;
         private Transform transform;
@@ -15,8 +17,9 @@ namespace Enemy.StateMachine
 
         private float waitTime;
 
-        public ChasingStateFairy(FairyStateMachine enemyBrain, Animator animator, NavMeshAgent navMeshAgent)
+        public ChasingStateFairy(EnemyStateMachine stateMachine, FairyBehaviour enemyBrain, Animator animator, NavMeshAgent navMeshAgent)
         {
+            this.stateMachine = stateMachine;
             this.enemyBrain = enemyBrain;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
@@ -43,15 +46,15 @@ namespace Enemy.StateMachine
 
             if (enemyBrain.PlayerInAttackDistance())
             {
-                enemyBrain.ChangeState(FairyStates.Attack);
+                stateMachine.Enter<AttackStateFairy>(); // Исправлено
             }
             else if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
-                enemyBrain.Stop();
                 waitTime -= Time.deltaTime;
                 if (waitTime <= 0)
                 {
-                    enemyBrain.ChangeState(FairyStates.Patrol);
+                    stateMachine.Enter<PatrolStateFairy>(); // Исправлено
+                    Debug.Log("Now patroling");
                 }
             }
         }
