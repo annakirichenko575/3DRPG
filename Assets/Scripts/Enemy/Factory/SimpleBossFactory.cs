@@ -13,10 +13,21 @@ public class SimpleBossFactory : BossFactory
     {
         if (bossBehaviour == null)
         {
-            Debug.LogError("BossBehaviour is null in SetupBoss!");
+            Debug.LogError("BossBehaviour is null!");
         }
 
         bossBehaviour.Construct(playerFactory, waypoints);
+
+        BossWeaponController weaponController = bossBehaviour.GetComponentInChildren<BossWeaponController>();
+        if (weaponController != null)
+        {
+            weaponController.InitializeWeapon();
+        }
+        else
+        {
+            Debug.LogWarning("BossWeaponController not found!");
+        }
+
         return bossBehaviour;
     }
 }

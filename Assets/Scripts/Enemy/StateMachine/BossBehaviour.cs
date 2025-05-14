@@ -33,6 +33,9 @@ namespace Enemy.StateMachine
             ? (float)healthPoints.Health / healthPoints.MaxHealth
             : 1f;
 
+        [SerializeField] private BossWeaponController bossWeaponController;
+        public BossWeaponController WeaponController => bossWeaponController;
+
         public void Construct(PlayerFactory playerFactory, Transform[] waypoints)
         {
             this.player = playerFactory.Player;
@@ -81,8 +84,8 @@ namespace Enemy.StateMachine
             {
                 [typeof(IdleState)] = new IdleState(stateMachine, this, animator, navMeshAgent),
                 [typeof(AggressiveState)] = new AggressiveState(stateMachine, this, animator, navMeshAgent),
-                [typeof(AttackStateBoss)] = new AttackStateBoss(stateMachine, this, animator, navMeshAgent),
-                [typeof(StrongAttackState)] = new StrongAttackState(stateMachine, this, animator, navMeshAgent),
+                [typeof(AttackStateBoss)] = new AttackStateBoss(stateMachine, this, animator, navMeshAgent, WeaponController),
+                [typeof(StrongAttackState)] = new StrongAttackState(stateMachine, this, animator, navMeshAgent, WeaponController),
             };
 
             stateMachine.Initialize(states);

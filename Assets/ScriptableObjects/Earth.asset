@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff4aea0f84363746878677b0be26b37, type: 3}
+  m_Name: Earth
+  m_EditorClassIdentifier: 
+  elementName: Earth
+  bonusDamage: 6
+  soundEffect: {fileID: 0}
+  particleEffectPrefab: {fileID: 484368387861551534, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
+  effectColor: {r: 0.5597484, g: 0.22002684, b: 0.22002684, a: 1}

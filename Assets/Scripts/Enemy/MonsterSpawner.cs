@@ -85,14 +85,15 @@ public class MonsterSpawner : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("CreateBoss returned null. Scene boss not removed.");
+                Debug.LogWarning("CreateBoss returned null.");
             }
         }
         else
         {
             Debug.LogWarning("Extra boss factory is not initialized!");
         }
-}
+
+    }
 
     private int GetRandomIndex(int count) => Random.Range(0, count);
 }

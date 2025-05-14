@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
-using UnityEngine.UI;
 using System;
 using SaveSystem;
 
 namespace Player
 {
-    public class HealthPoints : MonoBehaviour //Model
+    public class HealthPoints : MonoBehaviour
     {
         [SerializeField] private float hitInvincibilityTime = 2f;
 
@@ -34,17 +33,22 @@ namespace Player
 
             playerRepository.SetPlayerHealth(playerRepository.Health + heal);
             HealthClamp();
-            OnHeal.Invoke();
+            OnHeal?.Invoke();
         }
 
         public void Hit(int damage)
         {
-            if (isDeath || isInvincible)
-            {
-                return;
-            }
+            Hit(damage, 0);
+        }
 
-            playerRepository.SetPlayerHealth(playerRepository.Health - damage);
+        public void Hit(int damage, int bonusDamage)
+        {
+            if (isDeath || isInvincible)
+                return;
+
+            int totalDamage = damage + bonusDamage;
+
+            playerRepository.SetPlayerHealth(playerRepository.Health - totalDamage);
 
             HealthClamp();
 
@@ -59,7 +63,6 @@ namespace Player
                 OnHit?.Invoke();
             }
         }
-
 
         private void HealthClamp()
         {

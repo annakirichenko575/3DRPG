@@ -17,15 +17,18 @@ namespace Enemy.StateMachine
         private float attackInterval = 3f;
         private Player.HealthPoints playerHealth;
         private Coroutine attackCoroutine;
+        private BossWeaponController bossWeaponController;
 
-        public AttackStateBoss(EnemyStateMachine stateMachine, BossBehaviour boss, Animator animator, NavMeshAgent navMeshAgent)
+        public AttackStateBoss(EnemyStateMachine stateMachine, BossBehaviour boss, Animator animator, NavMeshAgent navMeshAgent, BossWeaponController bossWeaponController)
         {
             this.stateMachine = stateMachine;
             this.boss = boss;
             this.animator = animator;
             this.navMeshAgent = navMeshAgent;
             this.player = boss.Player;
+            this.bossWeaponController = bossWeaponController;
         }
+
 
         public void Enter()
         {
@@ -69,7 +72,9 @@ namespace Enemy.StateMachine
         {
             while (playerHealth != null && !playerHealth.IsDeath)
             {
-                playerHealth.Hit(damage);
+                int bonus = bossWeaponController.GetElementalBonusDamage();
+                playerHealth.Hit(damage, bonus);
+                bossWeaponController.PlayElementEffect();
                 yield return new WaitForSeconds(attackInterval);
             }
 
