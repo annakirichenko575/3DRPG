@@ -61,6 +61,7 @@ namespace Enemy
                 StartCoroutine(InvincibilityRoutine());
                 OnHit?.Invoke();
                 Debug.Log("EnemyGetHit");
+                Debug.Log($"Damage applied: {damage} from {new System.Diagnostics.StackTrace()}");
             }
         }
 

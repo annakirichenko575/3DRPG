@@ -17,7 +17,7 @@ namespace Enemy.StateMachine
         private EnemyStateMachine stateMachine;
         private NavMeshAgent navMeshAgent;
         private Animator animator;
-        private HealthPoints healthPoints;
+        private Enemy.HealthPoints healthPoints;
         private Transform runawayPoint;
         private PlayerFactory playerFactory;
 
@@ -81,7 +81,7 @@ namespace Enemy.StateMachine
             if (!navMeshAgent.enabled)
                 navMeshAgent.enabled = true;
 
-            stateMachine.Enter<PatrolStateFairy>();
+            /*stateMachine.Enter<PatrolStateFairy>();*/
 
             Debug.Log($"Fairy constructed with {waypoints?.Length ?? 0} waypoints");
         }
@@ -91,10 +91,10 @@ namespace Enemy.StateMachine
             navMeshAgent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             healthPoints = GetComponent<HealthPoints>();
+            healthPoints.OnHit += () => WasAttacked = true;
             
             if (healthPoints != null)
             {
-                healthPoints.OnHit += () => WasAttacked = true;
                 healthPoints.OnHit += OnEnemyHit;
             }
 
@@ -253,6 +253,8 @@ namespace Enemy.StateMachine
 
             wasAttacked = true;
             attackedResetTimer = 0;
+
+            Debug.Log($"Fairy took damage! Current health: {healthPoints.Health}");
         }
 
         private void UpdateAttackedTimer()

@@ -3231,7 +3231,7 @@ MonoBehaviour:
     viewRadius: 15
     viewAngle: 90
     attackDistance: 2.5
-  bulletPrefab: {fileID: 941435749049730702, guid: 65e5b8bab9df29642b94431840f27a9e, type: 3}
+  bulletPrefab: {fileID: 9182240560578513568, guid: dfef446d8dc52fb459f67f6be5f9ecf6, type: 3}
   firePoint: {fileID: 1181572198}
   playerMask:
     serializedVersion: 2
@@ -58477,7 +58477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2961982151973962569, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: -3.27
       objectReference: {fileID: 0}
     - target: {fileID: 2961982151973962569, guid: f3ed620430280ac4b8edd437a1cc5a29, type: 3}
       propertyPath: m_LocalPosition.z

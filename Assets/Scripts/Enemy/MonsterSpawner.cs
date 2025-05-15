@@ -71,8 +71,9 @@ public class MonsterSpawner : MonoBehaviour
             int pointIndex = GetRandomIndex(availableSpawnPoints.Count);
             Transform spawnPoint = availableSpawnPoints[pointIndex];
 
-            int wolfIndex = GetRandomIndex(fairyFactories.Length);
-            fairyFactories[wolfIndex].CreateFairy(spawnPoint.position);
+            int fairyIndex = GetRandomIndex(fairyFactories.Length);
+            fairyFactories[fairyIndex].CreateFairy(spawnPoint.position);
+            
 
             availableSpawnPoints.RemoveAt(pointIndex);
         }

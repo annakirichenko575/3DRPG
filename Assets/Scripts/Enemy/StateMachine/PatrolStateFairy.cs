@@ -37,8 +37,6 @@ namespace Enemy.StateMachine
 
         public void Update()
 {
-        // Дебаг-логи
-        Debug.Log($"PatrolState Update - Velocity: {navMeshAgent.velocity.magnitude}");
 
         if (GameModeManager.Instance.CurrentMode == GameMode.Peaceful)
         {

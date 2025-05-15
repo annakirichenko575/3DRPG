@@ -13,6 +13,7 @@ namespace Player
 
         public void Attack()
         {
+            Debug.Log("attacked w magick");
             GameObject nearestEnemy = FindNearestEnemy();
 
             if (nearestEnemy != null && magicBulletPrefab != null && firePoint != null)
