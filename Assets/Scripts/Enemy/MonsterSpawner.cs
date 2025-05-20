@@ -1,3 +1,5 @@
+using Enemy;
+using Enemy.Factory;
 using Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,17 +30,17 @@ public class MonsterSpawner : MonoBehaviour
     private FairyFactory strongFairyFactory;
     private BossFactory extraBossFactory;
 
-    public void Construct(PlayerFactory playerFactory)
+    public void Construct(PlayerFactory playerFactory, EnemyDeathCounter deathCounter)
     {
         if (playerFactory == null)
         {
             return;
         }
 
-        simpleWolfFactory = new SimpleWolfFactory(playerFactory, wolfbossPrefab, wolfWaypoints, wolfRunawayPoint);
-        strongWolfFactory = new StrongWolfFactory(playerFactory, wolfbossPrefab, wolfWaypoints, wolfRunawayPoint);
-        weakFairyFactory = new WeakFairyFactory(playerFactory, fairyPrefab, fairyWaypoints, fairyRunawayPoint);
-        strongFairyFactory = new StrongFairyFactory(playerFactory, fairyPrefab, fairyWaypoints, fairyRunawayPoint);
+        simpleWolfFactory = new SimpleWolfFactory(playerFactory, wolfbossPrefab, wolfWaypoints, wolfRunawayPoint, deathCounter);
+        strongWolfFactory = new StrongWolfFactory(playerFactory, wolfbossPrefab, wolfWaypoints, wolfRunawayPoint, deathCounter);
+        weakFairyFactory = new WeakFairyFactory(playerFactory, fairyPrefab, fairyWaypoints, fairyRunawayPoint, deathCounter);
+        strongFairyFactory = new StrongFairyFactory(playerFactory, fairyPrefab, fairyWaypoints, fairyRunawayPoint, deathCounter);
         extraBossFactory = new SimpleBossFactory(playerFactory, extraBossPrefab, extraBossSpawnPoint, bossWaypoints);
 
         FairyFactory[] fairyFactories = new[] { weakFairyFactory, strongFairyFactory};
@@ -76,18 +78,6 @@ public class MonsterSpawner : MonoBehaviour
             
 
             availableSpawnPoints.RemoveAt(pointIndex);
-        }
-    }
-
-    private void SpawnMonsters(GameObject monsterPrefab, List<Transform> availableSpawnPoints)
-    {
-        for (int i = 0; i < spawnCount && availableSpawnPoints.Count > 0; i++)
-        {
-            int randomIndex = GetRandomIndex(availableSpawnPoints.Count);
-            Transform spawnPoint = availableSpawnPoints[randomIndex];
-
-            Instantiate(monsterPrefab, spawnPoint.position, Quaternion.identity);
-            availableSpawnPoints.RemoveAt(randomIndex);
         }
     }
 

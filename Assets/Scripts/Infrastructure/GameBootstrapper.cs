@@ -1,3 +1,4 @@
+using Enemy;
 using Infrastructure.Services;
 using SaveSystem;
 using UnityEngine;
@@ -23,6 +24,9 @@ namespace Infrastructure
 
         private void Registrate()
         {
+            EnemyDeathCounter deathCounter = new EnemyDeathCounter();
+            AllServices.Container.RegisterSingle<EnemyDeathCounter>(deathCounter);
+
             PlayerRepository playerRepository = new PlayerRepository();
             AllServices.Container.RegisterSingle<PlayerRepository>(playerRepository);
 
@@ -31,6 +35,8 @@ namespace Infrastructure
 
             SceneLoader sceneLoader = new SceneLoader(playerFactory);
             AllServices.Container.RegisterSingle<SceneLoader>(sceneLoader);
+
+
         }
 
         private void LevelInitialize()
@@ -47,7 +53,7 @@ namespace Infrastructure
             MonsterSpawner[] spawners = FindObjectsOfType<MonsterSpawner>();
             for (int i = 0; i < spawners.Length; i++)
             {
-                spawners[i].Construct(playerFactory);
+                spawners[i].Construct(playerFactory, AllServices.Container.Single<EnemyDeathCounter>());
             }
         }
 

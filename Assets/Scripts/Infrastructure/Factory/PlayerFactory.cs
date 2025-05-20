@@ -2,7 +2,6 @@
 using Player;
 using SaveSystem;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Infrastructure
 {
@@ -12,7 +11,6 @@ namespace Infrastructure
         private Movement movement;
         private HealthPoints healthPoints;
         private PlayerRepository playerRepository;
-        private SceneLoader sceneLoader;
         private ManaBar manaBar;
         private ManaPoints manaPoints;
 
