@@ -48,8 +48,6 @@ public class MonsterSpawner : MonoBehaviour
 
         WolfFactory[] wolfFactories = new[] { simpleWolfFactory, strongWolfFactory };
         SpawnWolves(wolfFactories, wolfbossSpawnPoints.ToList());
-
-        SpawnExtraBoss();
     }
 
     private void SpawnWolves(WolfFactory[] wolfFactories, List<Transform> availableSpawnPoints)
@@ -81,7 +79,7 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnExtraBoss()
+    public void SpawnExtraBoss()
     {
         if (extraBossFactory != null)
         {

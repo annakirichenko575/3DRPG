@@ -7,7 +7,7 @@ namespace Infrastructure
 {
     public class GameBootstrapper : MonoBehaviour
     {
-
+        [SerializeField] private MonsterSpawner monsterSpawner;
         private void Awake()
         {
             Registrate();
@@ -24,7 +24,7 @@ namespace Infrastructure
 
         private void Registrate()
         {
-            EnemyDeathCounter deathCounter = new EnemyDeathCounter();
+            EnemyDeathCounter deathCounter = new EnemyDeathCounter(monsterSpawner);
             AllServices.Container.RegisterSingle<EnemyDeathCounter>(deathCounter);
 
             PlayerRepository playerRepository = new PlayerRepository();
