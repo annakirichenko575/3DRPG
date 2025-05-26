@@ -25,12 +25,9 @@ namespace Enemy
         {
             enemiesKilled++;
 
-            Debug.Log($"[EnemyDeathCounter] Enemy killed: {enemiesKilled}");
-
             if (!bossSpawned && enemiesKilled >= killsToSpawnBoss)
             {
                 bossSpawned = true;
-                Debug.Log("[EnemyDeathCounter] Spawning boss...");
                 monsterSpawner.SpawnExtraBoss(); 
             }
 

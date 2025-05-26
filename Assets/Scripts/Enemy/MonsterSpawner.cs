@@ -48,6 +48,8 @@ public class MonsterSpawner : MonoBehaviour
 
         WolfFactory[] wolfFactories = new[] { simpleWolfFactory, strongWolfFactory };
         SpawnWolves(wolfFactories, wolfbossSpawnPoints.ToList());
+
+        PrepareBoss();
     }
 
     private void SpawnWolves(WolfFactory[] wolfFactories, List<Transform> availableSpawnPoints)
@@ -79,8 +81,17 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
+    private void PrepareBoss()
+    {
+        if (sceneBossToRemove != null)
+            sceneBossToRemove.SetActive(false);
+    }
+
     public void SpawnExtraBoss()
     {
+        if (sceneBossToRemove != null)
+            sceneBossToRemove.SetActive(true); 
+
         if (extraBossFactory != null)
         {
             var newBoss = extraBossFactory.CreateBoss();
