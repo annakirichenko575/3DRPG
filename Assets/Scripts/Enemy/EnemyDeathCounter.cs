@@ -11,7 +11,7 @@ namespace Enemy
         private int enemiesToKill = 5;
         private int killsToSpawnBoss = 3;
         private AudioSource audioSource;
-        private int enemiesKilled = 0;
+        public static int enemiesKilled = 0;
         private bool bossSpawned = false;
 
         private AudioSource VictorySource => audioSource == null ? CreateVictorySource() : audioSource;

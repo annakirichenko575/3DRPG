@@ -8,7 +8,7 @@
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI, Player, Obstacles, Enemy
 - Active game object:
-  - Name: fairy
-  - Tag: Enemy
-  - Layer: Enemy
+  - Name: pause canvas
+  - Tag: Untagged
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
